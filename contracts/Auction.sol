@@ -1,4 +1,4 @@
-pragma solidity 0.4.23;
+pragma solidity ^0.4.22;
 
 contract DomainAuction {
     address public owner;
@@ -9,7 +9,7 @@ contract DomainAuction {
         uint256 amount;
         string url;
     }
-    
+
     struct WinningBid {
         uint winTimestamp;
         Bid bid;
@@ -17,30 +17,40 @@ contract DomainAuction {
 
     Bid public highestBid;
 
-    Bid[] public allBids;
-    
     WinningBid[] public winningBids;
+
+    event BidLog(Bid bid);
 
     ///////////////////////////////////
 
-    // TODO: handle case when highestBid has won a previous auction so shouldn't
-    // be refunded
     function placeBid(string url) public payable {
         require(msg.value > highestBid.amount);
-        newBid = Bid(now, msg.sender, msg.value, url);
-        allBids.push(newBid);
-        refundBid(highestBid);
+        Bid memory newBid = Bid(now, msg.sender, msg.value, url);
+
+        // Refund the current highest bid unless it's also the current winning bid
+        if (winningBids.length > 0) {
+            Bid memory currentWinningBid = winningBids[winningBids.length - 1].bid;
+            if (currentWinningBid.amount != highestBid.amount) {
+                refundBid(highestBid);
+            }   
+        }
+
+        // Update the highest bid and log the event
         highestBid = newBid;
+        emit BidLog(newBid);
     }
 
+    // This might fail if the bidder is trying some contract bullshit, but they do this
+    // at their own risk. It won't fail if the bidder is a non-contract address.
     function refundBid(Bid bid) private {
-        bid.bidder.transfer(bid.amount);
+        bid.bidder.send(bid.amount);
     }
     
-    // TODO: do some timing shit to trigger pickWinner() every x days
+    // This will need to be triggered externally every x days
     function pickWinner() public payable {
         require(msg.sender == owner);
-        winners.push(WinningBid(now, highestBid));
+        WinningBid memory winningBid = WinningBid(now, highestBid);
+        winningBids.push(winningBid);
     }
 
     ///////////////////////////////////
@@ -50,7 +60,6 @@ contract DomainAuction {
     }
 
     function kill() public {
-        if (msg.sender == owner) 
-            selfdestruct(owner);
+        if (msg.sender == owner) selfdestruct(owner);
     }
 }
