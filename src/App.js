@@ -20,7 +20,7 @@ class InnerComponent extends Component {
       from: this.state.account,
       to: CONTRACT_ETH_ADDRESS,
       value: values.bid,
-      data: web3.toHex({ url })
+      data: web3.toHex({ url: 'url' })
     }, (err, transactionHash) => {
       console.log(err);
       console.log(transactionHash);
