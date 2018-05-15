@@ -49,8 +49,7 @@ contract DomainAuction {
     // This will need to be triggered externally every x days
     function pickWinner() public payable {
         require(msg.sender == owner);
-        WinningBid memory winningBid = WinningBid(now, highestBid);
-        winningBids.push(winningBid);
+        winningBids.push(WinningBid(now, highestBid));
     }
 
     ///////////////////////////////////
