@@ -1,4 +1,4 @@
-pragma solidity ^0.4.22;
+pragma solidity 0.4.23;
 
 contract DomainAuction {
     address public owner;
@@ -17,9 +17,10 @@ contract DomainAuction {
 
     Bid public highestBid;
 
-    WinningBid[] public winningBids;
+    WinningBid public winningBid;
 
     event BidLog(Bid bid);
+    event WinningBidLog(WinningBid bid);
 
     ///////////////////////////////////
 
@@ -28,12 +29,10 @@ contract DomainAuction {
         Bid memory newBid = Bid(now, msg.sender, msg.value, url);
 
         // Refund the current highest bid unless it's also the current winning bid
-        if (winningBids.length > 0) {
-            Bid memory currentWinningBid = winningBids[winningBids.length - 1].bid;
-            if (currentWinningBid.amount != highestBid.amount) {
-                refundBid(highestBid);
-            }   
-        }
+        // Have to check whether there has been a winningBid yet via the timestamp
+        if (winningBid.winTimestamp != 0 && winningBid.bid.amount != highestBid.amount) {
+            refundBid(highestBid);
+        }   
 
         // Update the highest bid and log the event
         highestBid = newBid;
@@ -49,7 +48,12 @@ contract DomainAuction {
     // This will need to be triggered externally every x days
     function pickWinner() public payable {
         require(msg.sender == owner);
-        winningBids.push(WinningBid(now, highestBid));
+        
+        // Have to store the new winning bid in memory in order to emit it as part
+        // of an event. Can't emit an event straight from a stored variable.
+        WinningBid memory newWinningBid = WinningBid(now, highestBid);
+        winningBid = newWinningBid;
+        emit WinningBidLog(newWinningBid);
     }
 
     ///////////////////////////////////
