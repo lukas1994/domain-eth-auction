@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Text } from 'react-form';
 import { Web3Provider } from 'react-web3';
 import Web3 from 'web3'
+import InfoBar from './InfoBar.js'
 import './App.css';
 
 const CONTRACT_ETH_ADDRESS = 'xxx';
@@ -19,7 +20,6 @@ class InnerComponent extends Component {
     web3.eth.sendTransaction({
       from: this.state.account,
       to: CONTRACT_ETH_ADDRESS,
-      value: values.bid,
       data: web3.toHex({ url: 'url' })
     }, (err, transactionHash) => {
       console.log(err);
@@ -53,18 +53,31 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">ETH URL auction: bidding</h1>
-        </header>
-        <Web3Provider
-          /*web3UnavailableScreen={}
-          accountUnavailableScreen={}*/
-        >
-          <p className="App-intro">
-            Bid for algo.app
-          </p>
-          <InnerComponent />
-        </Web3Provider>
+        <div className="wrapper">
+          <aside className="side">
+            <h1>algo.app</h1>
+            <h2>domain auction on the<br/>ethereum blockchain</h2>
+            <div className="spacer-50"/>
+            <div className="faq">
+              <div className="question">
+                how does it work?
+              </div>
+              <div className="answer">
+                This is a rolling auction — every 7 days, the highest bidder is awarded the right to point the algo.app domain to a URL of their choice.
+                <br/><br/>
+                Bids can be placed anytime, by sending ETH to the auction’s smart contract. See below.
+              </div>
+            </div>
+          </aside>
+          <article className="content">
+            <Web3Provider
+              /*web3UnavailableScreen={}
+              accountUnavailableScreen={}*/
+            >
+              <InnerComponent />
+            </Web3Provider>
+          </article> 
+        </div>
       </div>
     );
   }

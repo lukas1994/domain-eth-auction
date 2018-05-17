@@ -1,3 +1,7 @@
+body {
+  background: rgb(40,43,45);
+}
+
 .App {
   text-align: center;
 }
@@ -25,4 +29,79 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.content {
+  grid-area: content;
+}
+
+.side {
+  grid-area: sidebar;
+  background: rgb(33,35,36);
+  height: 100%;
+  padding: 30px;
+  text-align: left;
+}
+
+h1 {
+  color: white;
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-size: 2.4em;
+}
+
+h2 {
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+  font-size: 1.7em;
+}
+
+.question {
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 10px;
+}
+
+.answer {
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+
+.spacer-50 {
+  height: 50px;
+}
+
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-areas: 
+    "sidebar"
+    "content"
+    "footer";
+}
+
+@media (min-width: 500px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "sidebar"
+      "content"
+      "footer";
+  }
+  nav ul {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 840px) {
+  .wrapper {
+    grid-template-columns: 2fr 3fr;
+    grid-template-areas: 
+      "sidebar content"
+   }
+   nav ul {
+     flex-direction: column;
+   }
 }
