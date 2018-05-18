@@ -1,0 +1,21 @@
+.BidHistory {
+    text-align: left;
+}
+
+.history-wrapper {
+    column-count: 2;
+    column-width: 300px; 
+    text-align: left;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    width: 100%;
+    display: inline-block;
+    padding: 0;
+    border: 0;
+    text-align: left;
+}

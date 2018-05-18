@@ -1,11 +1,44 @@
 import React, { Component } from 'react';
 import { Form, Text } from 'react-form';
 import { Web3Provider } from 'react-web3';
-import Web3 from 'web3'
-import InfoBar from './InfoBar.js'
+import Web3 from 'web3';
+import BidHistory from './BidHistory.js';
+import HighestBid from './HighestBid.js';
+import WinningBids from './WinningBids.js';
 import './App.css';
 
 const CONTRACT_ETH_ADDRESS = 'xxx';
+const history = [
+  {
+    "address": "abcdef",
+    "amount": 12.45
+  },
+  {
+    "address": "abcdef",
+    "amount": 12.45
+  },
+  {
+    "address": "abcdef",
+    "amount": 12.45
+  }
+]
+const winners = [
+  {
+    "address": "abcdef",
+    "amount": 12.45,
+    "url": "google.com"
+  },
+  {
+    "address": "abcdef",
+    "amount": 12.45,
+    "url": "google.com"
+  },
+  {
+    "address": "abcdef",
+    "amount": 12.45,
+    "url": "google.com"
+  }
+]
 
 class InnerComponent extends Component {
   componentWillMount() {
@@ -68,14 +101,18 @@ class App extends Component {
                 Bids can be placed anytime, by sending ETH to the auction’s smart contract. See below.
               </div>
             </div>
-          </aside>
-          <article className="content">
+            <hr/>
             <Web3Provider
               /*web3UnavailableScreen={}
               accountUnavailableScreen={}*/
             >
               <InnerComponent />
             </Web3Provider>
+          </aside>
+          <article className="content">
+            <HighestBid bid={12.45} time='8m ago'/>
+            <BidHistory history={history}/>
+            <WinningBids winners={winners}/>
           </article> 
         </div>
       </div>

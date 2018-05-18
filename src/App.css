@@ -1,5 +1,7 @@
 body {
   background: rgb(40,43,45);
+  color: white;
+  font-family: 'system-ui', sans-serif;
 }
 
 .App {
@@ -38,9 +40,13 @@ body {
 .side {
   grid-area: sidebar;
   background: rgb(33,35,36);
-  height: 100%;
   padding: 30px;
   text-align: left;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.2);
 }
 
 h1 {
@@ -54,6 +60,10 @@ h2 {
   color: rgba(255,255,255,0.5);
   font-weight: 500;
   font-size: 1.7em;
+}
+
+.faq {
+  margin-bottom: 20px;
 }
 
 .question {
