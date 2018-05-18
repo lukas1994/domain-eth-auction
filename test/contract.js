@@ -2,14 +2,22 @@ const DomainAuction = artifacts.require("./DomainAuction.sol");
 
 contract('DomainAuction test', async (accounts) => {
 
-  it("should put 10000 MetaCoin in the first account", async () => {
-     let instance = await DomainAuction.deployed();
+  it("should store the highest bid URL correctly", async () => {
+    let instance = await DomainAuction.deployed();
+    const bidUrl = "google.com";
 
-     const URL = "google.com";
+    await instance.placeBid(bidUrl, {from: accounts[0], value: 1e8, gas: 3e6});
+    const highestBid = await instance.highestBid();
+    const highestBidUrl = highestBid[3]
 
-     await instance.placeBid(URL, {from: accounts[0]});
-     const url = await instance.highestBid.url.call();
-     assert.equal(url, URL, "hihihi");
+    assert.equal(highestBidUrl, bidUrl, "hihihi");
+  })
+
+  it("should reject bids that are lower than the threshold", async () => {
+    let instance = await DomainAuction.deployed();
+    const firstBidUrl = "google.com"
+    await instance.placeBid(firstBidUrl, {from: accounts[0], value: 1e8, gas: 3e6});
+    
   })
 
   // it("should call a function that depends on a linked library", async () => {

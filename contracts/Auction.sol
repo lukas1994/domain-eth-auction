@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity 0.4.23;
 
 contract DomainAuction {
     address public owner;
@@ -6,7 +6,7 @@ contract DomainAuction {
     struct Bid {
         uint timestamp;
         address bidder;
-        uint amount;
+        uint256 amount;
         string url;
     }
 
@@ -25,7 +25,7 @@ contract DomainAuction {
     ///////////////////////////////////
 
     function placeBid(string url) public payable {
-        require(msg.value > ((highestBid.amount * 11) / 10));
+        require(msg.value > highestBid.amount);
         Bid memory newBid = Bid(now, msg.sender, msg.value, url);
 
         // Refund the current highest bid unless it's also the current winning bid
@@ -60,6 +60,10 @@ contract DomainAuction {
 
     constructor() public payable {
         owner = msg.sender;
+    }
+
+    function withdraw() public {
+        if (msg.sender == owner) owner.transfer()
     }
 
     function kill() public {
