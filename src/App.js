@@ -10,31 +10,39 @@ import './App.css';
 const CONTRACT_ETH_ADDRESS = 'xxx';
 const history = [
   {
-    "address": "abcdef",
+    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
     "amount": 12.45
   },
   {
-    "address": "abcdef",
+    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
     "amount": 12.45
   },
   {
-    "address": "abcdef",
+    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
     "amount": 12.45
-  }
+  },
+  {
+    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
+    "amount": 12.45
+  },
+  {
+    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
+    "amount": 12.45
+  },
 ]
 const winners = [
   {
-    "address": "abcdef",
+    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
     "amount": 12.45,
     "url": "google.com"
   },
   {
-    "address": "abcdef",
+    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
     "amount": 12.45,
     "url": "google.com"
   },
   {
-    "address": "abcdef",
+    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
     "amount": 12.45,
     "url": "google.com"
   }

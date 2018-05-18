@@ -24,7 +24,7 @@ class WinningBids extends Component {
 
     return (
       <div className="WinningBids">
-        winners
+        <h3>winners</h3>
         <div className="winners-wrapper">
           {winningBids}
         </div>

@@ -1,21 +1,18 @@
-.BidHistory {
+.WinningBids {
     text-align: left;
+    margin-top: 50px;
 }
 
-.history-wrapper {
-    column-count: 2;
-    column-width: 300px; 
+.WinningBid {
     text-align: left;
-}
-
-ul {
-    list-style-type: none;
-}
-
-li {
-    width: 100%;
     display: inline-block;
-    padding: 0;
-    border: 0;
-    text-align: left;
+    box-sizing: border-box;
+    height: 145px;
+    width: 220px;
+    background: rgba(255,255,255,0.2);
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -42,6 +42,8 @@ body {
   background: rgb(33,35,36);
   padding: 30px;
   text-align: left;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 hr {
@@ -60,6 +62,12 @@ h2 {
   color: rgba(255,255,255,0.5);
   font-weight: 500;
   font-size: 1.7em;
+}
+
+h3 {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .faq {
@@ -87,8 +95,7 @@ h2 {
   grid-gap: 20px;
   grid-template-areas: 
     "sidebar"
-    "content"
-    "footer";
+    "content";
 }
 
 @media (min-width: 500px) {
@@ -96,8 +103,7 @@ h2 {
     grid-template-columns: 1fr;
     grid-template-areas: 
       "sidebar"
-      "content"
-      "footer";
+      "content";
   }
   nav ul {
     display: flex;
@@ -107,7 +113,7 @@ h2 {
 
 @media (min-width: 840px) {
   .wrapper {
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: 1fr 2fr 0px;
     grid-template-areas: 
       "sidebar content"
    }

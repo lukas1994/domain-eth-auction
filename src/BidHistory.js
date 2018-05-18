@@ -4,17 +4,29 @@ import { Web3Provider } from 'react-web3';
 import Web3 from 'web3'
 import './BidHistory.css';
 
+class Bid extends Component {
+  render() {
+    return (
+      <div className="Bid">
+        <span className="bid-counter">#{this.props.counter}</span>
+        <span className="bid-address">{this.props.address}</span>
+        <span className="bid-amount">{this.props.amount} ETH</span>
+      </div>
+    )
+  }
+}
+
 class BidHistory extends Component {
   render() {
-    const historyItems = this.props.history.map((obj) => {
-      return <li>{obj.address}{obj.amount}</li>
-    })
+    const historyItems = this.props.history.map((obj, index) => {
+      return <Bid key={index} counter={index} address={obj.address} amount={obj.amount} />
+    }).reverse()
     console.log(historyItems);
     return (
       <div className="BidHistory">
-        bids
+        <h3>bids</h3>
         <div className="history-wrapper">
-          <ul>{historyItems}</ul>
+          {historyItems}
         </div>
       </div>
     );
