@@ -9,7 +9,7 @@ import './App.css';
 
 const TEST_NETWORK_URL = 'https://ropsten.infura.io/KlHjV3YUnqo1NiSwGRNF';
 const MAIN_NETWORK_URL = 'https://mainnet.infura.io/KlHjV3YUnqo1NiSwGRNF';
-const CONTRACT_ETH_ADDRESS = '0x5a659e4168fb2deb5793ff3eba3d3323750a3058';
+const CONTRACT_TEST_ADDRESS = '0x5a659e4168fb2deb5793ff3eba3d3323750a3058';
 const CONTRACT_ABI = [
 	{
 		"anonymous": false,
@@ -228,7 +228,7 @@ const winners = [
 class PlaceBidComponent extends Component {
   componentWillMount() {
     const web3 = new Web3(window.web3.currentProvider);
-    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ETH_ADDRESS)
+    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_TEST_ADDRESS)
     this.setState({ web3, contract });
     
     web3.eth.getAccounts().then(accounts => {
@@ -244,7 +244,7 @@ class PlaceBidComponent extends Component {
     const contract = this.state.contract;
     contract.methods.placeBid(values.url).send({
       from: this.state.account,
-      to: CONTRACT_ETH_ADDRESS,
+      to: CONTRACT_TEST_ADDRESS,
       value: values.bid
     }, (err, transactionHash) => {
       console.log(err);
@@ -279,13 +279,23 @@ class PlaceBidComponent extends Component {
 class App extends Component {
   componentWillMount() {
     const web3 = new Web3(new Web3.providers.HttpProvider(TEST_NETWORK_URL));
-    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ETH_ADDRESS)
+    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_TEST_ADDRESS)
     this.setState({ web3, contract });
 
     contract.getPastEvents('allEvents', {fromBlock: 0, toBlock: 'latest'}).then(events => {
       const bidEvents = events.filter(event => event.event == 'BidLog').map(event => this.extractBidEvent(event))
       const winEvents = events.filter(event => event.event == 'WinningBidLog').map(event => this.extractWinEvent(event))
       this.setState({ bidEvents, winEvents })
+    })
+
+    contract.methods.highestBid().call((err, obj) => {
+      const highestBid = {
+        'amount': this.state.web3.utils.fromWei(obj.amount, 'ether'),
+        'address': obj.bidder,
+        'timestamp': obj.timestamp,
+        'url': obj.url
+      }
+      this.setState({ highestBid })
     })
   }
 
@@ -309,8 +319,8 @@ class App extends Component {
   }
 
   render() {
-    const bidEvents = this.state.bidEvents ? this.state.bidEvents : []
-
+    const bidEvents = this.state.bidEvents || []
+    const highestBid = this.state.highestBid || {}
     return (
       <div className="App">
         <div className="wrapper">
@@ -349,7 +359,7 @@ class App extends Component {
             </Web3Provider>
           </aside>
           <article className="content">
-            <HighestBid bid={12.45} time='8m ago'/>
+            <HighestBid bid={highestBid.amount} time={highestBid.timestamp}/>
             <BidHistory history={bidEvents}/>
             <WinningBids winners={winners}/>
           </article> 
