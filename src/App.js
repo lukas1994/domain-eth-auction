@@ -5,6 +5,8 @@ import Web3 from 'web3';
 import BidHistory from './BidHistory.js';
 import HighestBid from './HighestBid.js';
 import WinningBids from './WinningBids.js';
+import Web3NotFound from './Web3NotFound.js';
+import AccountNotFound from './AccountNotFound.js';
 import './App.css';
 
 const TEST_NETWORK_URL = 'https://ropsten.infura.io/KlHjV3YUnqo1NiSwGRNF';
@@ -352,8 +354,8 @@ class App extends Component {
             </div>
             <hr/>
             <Web3Provider
-              /*web3UnavailableScreen={}
-              accountUnavailableScreen={}*/
+              web3UnavailableScreen={Web3NotFound}
+              accountUnavailableScreen={AccountNotFound}
             >
               <PlaceBidComponent />
             </Web3Provider>
