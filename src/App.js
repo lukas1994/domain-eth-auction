@@ -7,6 +7,8 @@ import HighestBid from './HighestBid.js';
 import WinningBids from './WinningBids.js';
 import './App.css';
 
+const TEST_NETWORK_URL = 'https://ropsten.infura.io/KlHjV3YUnqo1NiSwGRNF';
+const MAIN_NETWORK_URL = 'https://mainnet.infura.io/KlHjV3YUnqo1NiSwGRNF';
 const CONTRACT_ETH_ADDRESS = '0x5a659e4168fb2deb5793ff3eba3d3323750a3058';
 const CONTRACT_ABI = [
 	{
@@ -276,7 +278,7 @@ class PlaceBidComponent extends Component {
 
 class App extends Component {
   componentWillMount() {
-    const web3 = new Web3(window.web3.currentProvider);
+    const web3 = new Web3(new Web3.providers.HttpProvider(TEST_NETWORK_URL));
     const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ETH_ADDRESS)
     this.setState({ web3, contract });
 
