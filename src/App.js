@@ -7,33 +7,30 @@ import HighestBid from './HighestBid.js';
 import WinningBids from './WinningBids.js';
 import './App.css';
 
-const CONTRACT_ETH_ADDRESS = '0xd96d1947b7758271c4b0621d90808825121bf329';
+const CONTRACT_ETH_ADDRESS = '0x5a659e4168fb2deb5793ff3eba3d3323750a3058';
 const CONTRACT_ABI = [
 	{
 		"anonymous": false,
 		"inputs": [
 			{
-				"components": [
-					{
-						"name": "timestamp",
-						"type": "uint256"
-					},
-					{
-						"name": "bidder",
-						"type": "address"
-					},
-					{
-						"name": "amount",
-						"type": "uint256"
-					},
-					{
-						"name": "url",
-						"type": "string"
-					}
-				],
 				"indexed": false,
-				"name": "bid",
-				"type": "tuple"
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "bidder",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "url",
+				"type": "string"
 			}
 		],
 		"name": "BidLog",
@@ -75,37 +72,29 @@ const CONTRACT_ABI = [
 		"anonymous": false,
 		"inputs": [
 			{
-				"components": [
-					{
-						"name": "winTimestamp",
-						"type": "uint256"
-					},
-					{
-						"components": [
-							{
-								"name": "timestamp",
-								"type": "uint256"
-							},
-							{
-								"name": "bidder",
-								"type": "address"
-							},
-							{
-								"name": "amount",
-								"type": "uint256"
-							},
-							{
-								"name": "url",
-								"type": "string"
-							}
-						],
-						"name": "bid",
-						"type": "tuple"
-					}
-				],
 				"indexed": false,
-				"name": "bid",
-				"type": "tuple"
+				"name": "winTimestamp",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "bidTimestamp",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "bidder",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "url",
+				"type": "string"
 			}
 		],
 		"name": "WinningBidLog",
@@ -239,6 +228,7 @@ class PlaceBidComponent extends Component {
     const web3 = new Web3(window.web3.currentProvider);
     const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ETH_ADDRESS)
     this.setState({ web3, contract });
+    
     web3.eth.getAccounts().then(accounts => {
       const account = accounts[0]
       this.setState({ account });
@@ -250,7 +240,6 @@ class PlaceBidComponent extends Component {
 
   handleSubmit(values) {
     const contract = this.state.contract;
-    console.log(contract);
     contract.methods.placeBid(values.url).send({
       from: this.state.account,
       to: CONTRACT_ETH_ADDRESS,
@@ -286,7 +275,40 @@ class PlaceBidComponent extends Component {
 }
 
 class App extends Component {
+  componentWillMount() {
+    const web3 = new Web3(window.web3.currentProvider);
+    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ETH_ADDRESS)
+    this.setState({ web3, contract });
+
+    contract.getPastEvents('allEvents', {fromBlock: 0, toBlock: 'latest'}).then(events => {
+      const bidEvents = events.filter(event => event.event == 'BidLog').map(event => this.extractBidEvent(event))
+      const winEvents = events.filter(event => event.event == 'WinningBidLog').map(event => this.extractWinEvent(event))
+      this.setState({ bidEvents, winEvents })
+    })
+  }
+
+  extractBidEvent(event) {
+    return {
+      amount: this.state.web3.utils.fromWei(event.returnValues.amount, 'ether'), 
+      address: event.returnValues.bidder,
+      timestamp: event.returnValues.timestamp,
+      url: event.returnValues.url
+    }
+  }
+
+  extractWinEvent(event) {
+    return {
+      amount: this.state.web3.utils.fromWei(event.returnValues.amount, 'ether'), 
+      address: event.returnValues.bidder,
+      bidTimestamp: event.returnValues.bidTimestamp,
+      winTimestamp: event.returnValues.winTimestamp,
+      url: event.returnValues.url
+    }
+  }
+
   render() {
+    const bidEvents = this.state.bidEvents ? this.state.bidEvents : []
+
     return (
       <div className="App">
         <div className="wrapper">
@@ -326,7 +348,7 @@ class App extends Component {
           </aside>
           <article className="content">
             <HighestBid bid={12.45} time='8m ago'/>
-            <BidHistory history={history}/>
+            <BidHistory history={bidEvents}/>
             <WinningBids winners={winners}/>
           </article> 
         </div>

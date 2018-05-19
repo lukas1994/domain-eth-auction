@@ -19,8 +19,8 @@ contract DomainAuction {
 
     WinningBid public winningBid;
 
-    event BidLog(Bid bid);
-    event WinningBidLog(WinningBid bid);
+    event BidLog(uint timestamp, address bidder, uint amount, string url);
+    event WinningBidLog(uint winTimestamp, uint bidTimestamp, address bidder, uint amount, string url);
 
     ///////////////////////////////////
 
@@ -32,11 +32,11 @@ contract DomainAuction {
         // Have to check whether there has been a winningBid yet via the timestamp
         if (winningBid.winTimestamp != 0 && winningBid.bid.amount != highestBid.amount) {
             refundBid(highestBid);
-        }   
+        }
 
         // Update the highest bid and log the event
         highestBid = newBid;
-        emit BidLog(newBid);
+        emit BidLog(newBid.timestamp, newBid.bidder, newBid.amount, newBid.url);
     }
 
     // This might fail if the bidder is trying some contract bullshit, but they do this
@@ -53,7 +53,13 @@ contract DomainAuction {
         // of an event. Can't emit an event straight from a stored variable.
         WinningBid memory newWinningBid = WinningBid(now, highestBid);
         winningBid = newWinningBid;
-        emit WinningBidLog(newWinningBid);
+        emit WinningBidLog(
+            newWinningBid.winTimestamp, 
+            newWinningBid.bid.timestamp, 
+            newWinningBid.bid.bidder, 
+            newWinningBid.bid.amount, 
+            newWinningBid.bid.url
+        );
     }
 
     ///////////////////////////////////

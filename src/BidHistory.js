@@ -11,7 +11,7 @@ class Bid extends Component {
         <div className="bid-inner">
           <span className="bid-counter">#{this.props.counter}</span>
           <span className="bid-address">{this.props.address}</span>
-          <span className="bid-amount">{this.props.amount} ETH</span>
+          <span className="bid-amount">{Number(this.props.amount).toPrecision(2)} ETH</span>
         </div>
       </div>
     )
