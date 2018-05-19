@@ -8,9 +8,11 @@ class Bid extends Component {
   render() {
     return (
       <div className="Bid">
-        <span className="bid-counter">#{this.props.counter}</span>
-        <span className="bid-address">{this.props.address}</span>
-        <span className="bid-amount">{this.props.amount} ETH</span>
+        <div className="bid-inner">
+          <span className="bid-counter">#{this.props.counter}</span>
+          <span className="bid-address">{this.props.address}</span>
+          <span className="bid-amount">{this.props.amount} ETH</span>
+        </div>
       </div>
     )
   }

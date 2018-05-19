@@ -6,11 +6,14 @@ import './WinningBids.css';
 
 class WinningBid extends Component {
     render() {
+        const className = this.props.counter === 0 ? "WinningBid current-winner" : "WinningBid"
         return (
-          <div className="WinningBid">
-            {this.props.amount} <br/>
-            {this.props.url} <br/>
-            {this.props.address}
+          <div className={className}>
+            <div className="winning-bid-inner">
+              <div className="winning-bid-amount">{this.props.amount} ETH</div>
+              <div className="winning-bid-url">{this.props.url}</div>
+              <div className="winning-bid-address">{this.props.address}</div>
+            </div>
           </div>  
         )
     }
@@ -18,8 +21,8 @@ class WinningBid extends Component {
 
 class WinningBids extends Component {
   render() {
-    const winningBids = this.props.winners.map(obj => {
-      return <WinningBid address={obj.address} amount={obj.amount} url={obj.url}/>
+    const winningBids = this.props.winners.map((obj, index) => {
+      return <WinningBid key={index} counter={index} address={obj.address} amount={obj.amount} url={obj.url}/>
     })
 
     return (
