@@ -35,37 +35,37 @@ class AccountDetailsComponent extends Component {
 
 class PlaceBidComponent extends Component {
     componentWillMount() {
-      const web3 = new Web3(window.web3.currentProvider);
-      const contract = getContract(web3);
-      this.setState({ web3, contract });
-  
-      web3.eth.getAccounts().then(accounts => {
+      this.web3 = new Web3(window.web3.currentProvider);
+      this.contract = getContract(this.web3);
+
+      this.web3.eth.getAccounts().then(accounts => {
         if (accounts.length > 0) {
           const account = accounts[0];
           this.setState({ account });
-          return web3.eth.getBalance(account);
+          return this.web3.eth.getBalance(account);
         }
       }).then(balance => {
         this.setState({ balance });
       });
     }
-  
+
     handleSubmit(values) {
-      this.state.contract.methods.placeBid(values.url).send({
+      this.contract.methods.placeBid(values.url).send({
         from: this.state.account,
         to: constants.CONTRACT_ADDRESS,
-        value: this.state.web3.utils.toWei(values.bid, 'ether'),
+        value: this.web3.utils.toWei(values.bid, 'ether'),
       }, (err, transactionHash) => {
         console.log(err);
         console.log(transactionHash);
       })
     }
-  
+
     render () {
+      if (!this.state) return <div/>;
       const account = this.state.account
-      const balance = this.state.balance ? this.state.web3.utils.fromWei((this.state.balance), 'ether') : 0
+      const balance = this.state.balance ? this.web3.utils.fromWei((this.state.balance), 'ether') : 0
       const minimumBid = Number(this.props.minimumBid).toPrecision(4) || 0;
-      const bidForm = 
+      const bidForm =
         <Form
           onSubmit={this.handleSubmit.bind(this)}
           render={({ submitForm }) => (
@@ -82,7 +82,7 @@ class PlaceBidComponent extends Component {
             </form>
           )}
         />
-      const topupNotice = 
+      const topupNotice =
         <div className="topup-notice">
           If you're in the US, you can purchase ETH from MetaMask itself (via Coinbase). For everyone else,
           you'll need to buy ETH from an exchange (like Coinbase) and transfer it to your MetaMask wallet. This only takes
@@ -99,7 +99,7 @@ class PlaceBidComponent extends Component {
           </div>
         </div>
       )
-  
+
     }
   }
 

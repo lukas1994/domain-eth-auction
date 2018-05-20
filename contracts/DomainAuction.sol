@@ -32,13 +32,10 @@ contract DomainAuction {
         require(msg.value > ((highestBid.amount * 11) / 10));
         Bid memory newBid = Bid(now, msg.sender, msg.value, url);
 
-        // Refund the current highest bid unless it's also the current winning bid
-        // Have to check whether there has been a winningBid yet via the timestamp
-        if (winningBid.winTimestamp == 0 || (winningBid.winTimestamp != 0 && winningBid.bidAmount != highestBid.amount)) {
-            // Do not refund anything on the first `placeBid` call.
-            if (highestBid.bidder != 0) {
-                refundBid(highestBid);
-            }
+        // Refund the current highest bid.
+        // Do not refund anything on the first `placeBid` call.
+        if (highestBid.bidder != 0) {
+            refundBid(highestBid);
         }
 
         // Update the highest bid and log the event
@@ -60,7 +57,7 @@ contract DomainAuction {
     function pickWinner() public payable {
         require(msg.sender == owner);
 
-        if (winningBid.winTimestamp != now) {
+        if (winningBid.bidTimestamp != highestBid.timestamp) {
           // Have to store the new winning bid in memory in order to emit it as part
           // of an event. Can't emit an event straight from a stored variable.
           WinningBid memory newWinningBid = WinningBid(now, highestBid.timestamp, highestBid.bidder, highestBid.amount, highestBid.url);

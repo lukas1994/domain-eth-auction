@@ -19,30 +19,46 @@ function getContract(web3) {
 
 class App extends Component {
   componentWillMount() {
-    const web3 = new Web3(new Web3.providers.HttpProvider(constants.NETWORK_URL));
-    const contract = getContract(web3);
-    this.setState({ web3, contract });
+    this.web3 = new Web3(new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws'));
+    // this.web3 = new Web3(new Web3.providers.HttpProvider(constants.NETWORK_URL));
+    this.contract = getContract(this.web3);
 
-    contract.getPastEvents('allEvents', {fromBlock: 0, toBlock: 'latest'}).then(events => {
-      const bidEvents = events.filter(event => event.event === 'BidLog').map(event => this.extractBidEvent(event))
-      const winEvents = events.filter(event => event.event === 'WinningBidLog').map(event => this.extractWinEvent(event))
-      this.setState({ bidEvents, winEvents })
-    })
+    // load past events
+    const pastEventFilterConfig = { fromBlock: 0, toBlock: 'latest' };
+    this.contract.getPastEvents('BidLog', pastEventFilterConfig).then(events => {
+      console.log('now');
+      this.setState({ bidEvents: events.map(event => this.extractBidEvent(event))});
+    });
+    this.contract.getPastEvents('WinningBidLog', pastEventFilterConfig).then(events => {
+      this.setState({ winEvents: events.map(event => this.extractWinEvent(event))});
+    });
 
-    contract.methods.highestBid().call((err, obj) => {
-      const highestBid = {
-        'amount': this.state.web3.utils.fromWei(obj.amount, 'ether'),
-        'address': obj.bidder,
-        'timestamp': obj.timestamp,
-        'url': obj.url
+    // subscribe to new events
+    const newEventsFilterConfig = { fromBlock: 0 };
+    console.log(this.contract.events);
+    this.contract.events.BidLog(newEventsFilterConfig, (err, event) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.setState({
+          bidEvents: this.state.bidEvents.concat([this.extractBidEvent(event)])
+        });
       }
-      this.setState({ highestBid })
-    })
+    });
+    this.contract.events.WinningBidLog(newEventsFilterConfig, (err, event) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.setState({
+          winEvents: this.state.winEvents.concat([this.extractWinEvent(event)])
+        });
+      }
+    });
   }
 
   extractBidEvent(event) {
     return {
-      amount: this.state.web3.utils.fromWei(event.returnValues.amount, 'ether'),
+      amount: this.web3.utils.fromWei(event.returnValues.amount, 'ether'),
       address: event.returnValues.bidder,
       timestamp: event.returnValues.timestamp,
       url: event.returnValues.url
@@ -51,7 +67,7 @@ class App extends Component {
 
   extractWinEvent(event) {
     return {
-      amount: this.state.web3.utils.fromWei(event.returnValues.amount, 'ether'),
+      amount: this.web3.utils.fromWei(event.returnValues.amount, 'ether'),
       address: event.returnValues.bidder,
       bidTimestamp: event.returnValues.bidTimestamp,
       winTimestamp: event.returnValues.winTimestamp,
@@ -59,10 +75,22 @@ class App extends Component {
     }
   }
 
+  getHighestBid(bidEvents) {
+    let highestBid = null;
+    bidEvents.forEach(bid => {
+      if (highestBid === null || highestBid.amount < bid.amount) {
+        highestBid = bid;
+      }
+    });
+    return highestBid || {};
+  }
+
   render() {
-    const bidEvents = this.state.bidEvents || []
-    const highestBid = this.state.highestBid || {}
-    const winEvents = this.state.winEvents || []
+    if (!this.state) return <div/>;
+    const bidEvents = this.state.bidEvents || [];
+    const winEvents = this.state.winEvents || [];
+    const highestBid = this.getHighestBid(bidEvents);
+
     return (
       <div className="App">
         <div className="wrapper">
