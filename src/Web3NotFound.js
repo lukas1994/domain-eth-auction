@@ -9,7 +9,7 @@ class Web3NotFound extends Component {
       <div className="Web3Notice">
         <MetamaskStatus status='not-found'/>
         <div className="answer">
-          To get started, we need to get your browser connected to the blockchain. 
+          To get started, you need to connect your browser to the blockchain. 
           An extension called MetaMask lets you do this: <br/>
           <div className="metamask-button-wrapper">
             <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">

@@ -17,10 +17,10 @@ a {
 
 .metamask-button {
     display: inline-block;
-    padding-left: 10px;
-    padding-right: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-family: 'system-ui', sans-serif;
     background: rgba(230,230,255,0.15);
     margin: 0 auto;
@@ -28,10 +28,36 @@ a {
     border-radius: 8px;
 }
 
+.metamask-button-locked {
+    display: inline-block;
+    cursor: not-allowed;
+    padding-left: 20px;
+    padding-right: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: 'system-ui', sans-serif;
+    background: rgba(230,230,255,0.15);
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.metamask-button-locked .metamask-button-text {
+    color: rgba(255,255,255,0.8);
+}
+
+.metamask-button-locked .metamask-logo {
+    filter: grayscale(70%);
+}
+
+.metamask-button:hover {
+    background: rgba(230,230,255,0.20);
+}
+
 .metamask-button-text {
     vertical-align: middle;
     color: white;
-    margin-left: 5px;
+    margin-left: 7px;
 }
 
 .metamask-logo {

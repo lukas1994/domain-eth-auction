@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import MetamaskStatus from './MetamaskStatus.js';
 import './Web3Notice.css';
+const metamaskLogo = require('./metamask-logo.svg');
+
 
 class Web3NotFound extends Component {
   render() {
@@ -9,6 +11,12 @@ class Web3NotFound extends Component {
         <MetamaskStatus status='locked'/>
         <div className="answer">
           Your MetaMask is locked — just open the extension and follow the instructions. You're almost there!
+          <div className="metamask-button-wrapper">
+            <button className="metamask-button-locked">
+              <img src={metamaskLogo} className="metamask-logo"/>
+              <span className="metamask-button-text">MetaMask locked</span>
+            </button>
+          </div>
         </div>
       </div>
     );
