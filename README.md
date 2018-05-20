@@ -27,3 +27,11 @@ truffle migrate --network ropsten
 ```bash
 truffle exec pickWinner.js --network ropsten
 ```
+
+### testing
+
+* install and run [Ganache](http://truffleframework.com/ganache/)
+
+```bash
+truffle test
+```
