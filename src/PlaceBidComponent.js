@@ -84,8 +84,9 @@ class PlaceBidComponent extends Component {
         />
       const topupNotice = 
         <div className="topup-notice">
-          The best way to get more ether is on Coinbase. Make an account and buy some in exchange for fiat, and 
-          then transfer it to your MetaMask wallet. It won't take more than a few minutes!
+          If you're in the US, you can purchase ETH from MetaMask itself (via Coinbase). For everyone else,
+          you'll need to buy ETH from an exchange (like Coinbase) and transfer it to your MetaMask wallet. This only takes
+          a few minutes.
         </div>
       return !account ? (<p>loading account...</p>) : (
         <div>
