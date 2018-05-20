@@ -60,17 +60,19 @@ contract DomainAuction {
     function pickWinner() public payable {
         require(msg.sender == owner);
 
-        // Have to store the new winning bid in memory in order to emit it as part
-        // of an event. Can't emit an event straight from a stored variable.
-        WinningBid memory newWinningBid = WinningBid(now, highestBid.timestamp, highestBid.bidder, highestBid.amount, highestBid.url);
-        winningBid = newWinningBid;
-        emit WinningBidLog(
-            newWinningBid.winTimestamp,
-            newWinningBid.bidTimestamp,
-            newWinningBid.bidder,
-            newWinningBid.bidAmount,
-            newWinningBid.url
-        );
+        if (winningBid.winTimestamp != now) {
+          // Have to store the new winning bid in memory in order to emit it as part
+          // of an event. Can't emit an event straight from a stored variable.
+          WinningBid memory newWinningBid = WinningBid(now, highestBid.timestamp, highestBid.bidder, highestBid.amount, highestBid.url);
+          winningBid = newWinningBid;
+          emit WinningBidLog(
+              newWinningBid.winTimestamp,
+              newWinningBid.bidTimestamp,
+              newWinningBid.bidder,
+              newWinningBid.bidAmount,
+              newWinningBid.url
+          );
+        }
     }
 
     ///////////////////////////////////

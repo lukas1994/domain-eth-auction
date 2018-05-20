@@ -9,50 +9,33 @@ import Web3NotFound from './Web3NotFound.js';
 import AccountNotFound from './AccountNotFound.js';
 import './App.css';
 import compiledContract from './DomainAuction.json';
+import constants from './constants'
 
-
-const NETWORK_URL = 'https://ropsten.infura.io/KlHjV3YUnqo1NiSwGRNF';
-// const NETWORK_URL = 'https://mainnet.infura.io/KlHjV3YUnqo1NiSwGRNF';
-const CONTRACT_TEST_ADDRESS = '0x5a659e4168fb2deb5793ff3eba3d3323750a3058';
-const CONTRACT_ABI = compiledContract.abi
-const winners = [
-  {
-    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
-    "amount": 12.45,
-    "url": "google.com"
-  },
-  {
-    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
-    "amount": 12.45,
-    "url": "google.com"
-  },
-  {
-    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
-    "amount": 12.45,
-    "url": "google.com"
-  }
-]
+function getContract(web3) {
+  return new web3.eth.Contract(compiledContract.abi, constants.CONTRACT_ADDRESS);
+}
 
 class PlaceBidComponent extends Component {
   componentWillMount() {
     const web3 = new Web3(window.web3.currentProvider);
-    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_TEST_ADDRESS)
+    const contract = getContract(web3);
     this.setState({ web3, contract });
 
     web3.eth.getAccounts().then(accounts => {
-      const account = accounts[0]
-      this.setState({ account });
-      return web3.eth.getBalance(account)
-    }).then((balance) => {
+      if (accounts.length > 0) {
+        const account = accounts[0];
+        this.setState({ account });
+        return web3.eth.getBalance(account);
+      }
+    }).then(balance => {
       this.setState({ balance });
     });
   }
 
   handleSubmit(values) {
-    const contract = this.state.contract;
-    contract.methods.placeBid(values.url).send({
+    this.state.contract.methods.placeBid(values.url).send({
       from: this.state.account,
-      to: CONTRACT_TEST_ADDRESS,
+      to: constants.CONTRACT_ADDRESS,
       value: this.state.web3.utils.toWei(values.bid, 'ether'),
     }, (err, transactionHash) => {
       console.log(err);
@@ -86,8 +69,8 @@ class PlaceBidComponent extends Component {
 
 class App extends Component {
   componentWillMount() {
-    const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL));
-    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_TEST_ADDRESS)
+    const web3 = new Web3(new Web3.providers.HttpProvider(constants.NETWORK_URL));
+    const contract = getContract(web3);
     this.setState({ web3, contract });
 
     contract.getPastEvents('allEvents', {fromBlock: 0, toBlock: 'latest'}).then(events => {
