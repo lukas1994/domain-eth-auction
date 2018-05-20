@@ -134,7 +134,7 @@ ol li {
 
 @media (min-width: 800px) {
   .wrapper {
-    grid-template-columns: minmax(400px, 1fr) 2fr 0px;
+    grid-template-columns: minmax(500px, 1fr) 2fr 0px;
     grid-template-areas: 
       "sidebar content"
    }

@@ -69,17 +69,24 @@ class PlaceBidComponent extends Component {
       return !account ? (<p>loading account...</p>) : (
         <div>
           <AccountDetailsComponent address={account} balance={balance}/>
-          <p>min bid: {minimumBid} ETH</p>
           <Form
             onSubmit={this.handleSubmit.bind(this)}
             render={({ submitForm }) => (
-              <form onSubmit={submitForm}>
-                <Text field="bid" placeholder='Bid (in ETH)' value={minimumBid}/>
-                <Text field="url" placeholder='URL' />
-                <button type="submit">Submit</button>
+              <form onSubmit={submitForm} className="bid-form">
+                <div className="bid-form-fields">
+                  <div className="field-name">Bid:</div>
+                  <Text field="bid" className="field bid-field" placeholder='Bid (ETH)' defaultValue={minimumBid}/>
+                  <div className="field-help">Your bid amount in ETH</div>
+                  <div className="field-name">URL:</div>
+                  <Text field="url" className="field url-field" placeholder='URL' />
+                  <div className="field-help">The URL to point algo.app to</div>
+                </div>
+                <button type="submit" className="bid-form-submit">Place Bid</button>
               </form>
             )}
           />
+          <p>Minimum Bid: {minimumBid} ETH</p>
+          {balance < minimumBid ? "Your account balance is lower than the current minimum bid." : null}
         </div>
       )
   
