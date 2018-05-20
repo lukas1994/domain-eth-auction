@@ -20,7 +20,7 @@ async function expectThrow(
 
 async function getBalance(address) {
   const balance = await web3.eth.getBalance(address);
-  return balance.toString(10);
+  return balance;
 }
 
 function getUrl() {
@@ -32,6 +32,12 @@ function getUrl() {
   }
 
   return text + ".com";
+}
+
+async function getTxCost(hash) {
+  const tx = await web3.eth.getTransaction(hash);
+  const receipt = await web3.eth.getTransactionReceipt(hash);
+  return tx.gasPrice.mul(receipt.gasUsed);
 }
 
 contract('DomainAuction test', async (accounts) => {
@@ -49,7 +55,10 @@ contract('DomainAuction test', async (accounts) => {
 
   it("should store the highest bid URL correctly and allow updates", async () => {
     const firstBidUrl = getUrl();
-    await instance.placeBid(firstBidUrl, {from: accounts[0], value: 1e8, gas: 3e6});
+    const initialBalanceAccount0 = await getBalance(accounts[0]);
+    const placeBidTx = await instance.placeBid(firstBidUrl, {from: accounts[0], value: 1e8, gas: 3e6});
+
+
     const highestBid = await instance.highestBid();
     const highestBidBidder = highestBid[1];
     const highestBidUrl = highestBid[3];
@@ -65,6 +74,10 @@ contract('DomainAuction test', async (accounts) => {
 
     assert.equal(highestBidUrl2, secondBidUrl, "Highest bid url not stored correctly.");
     assert.equal(highestBidBidder2, accounts[1], "Highest bidder not stored correctly.");
+
+    const finalBalanceAccount0 = await getBalance(accounts[0]);
+    const txCost = await getTxCost(placeBidTx.tx);
+    assert.equal(initialBalanceAccount0.toString(10), finalBalanceAccount0.add(txCost).toString(10), "Refunding didn't work.");
   });
 
   it("should reject bids that are lower than 1.1x of the current maximum bid", async () => {

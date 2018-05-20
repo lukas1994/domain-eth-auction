@@ -24,6 +24,7 @@ contract DomainAuction {
 
     event BidLog(uint timestamp, address bidder, uint amount, string url);
     event WinningBidLog(uint winTimestamp, uint bidTimestamp, address bidder, uint amount, string url);
+    event Refund(uint timestamp, address bidder, uint amount);
 
     ///////////////////////////////////
 
@@ -34,7 +35,10 @@ contract DomainAuction {
         // Refund the current highest bid unless it's also the current winning bid
         // Have to check whether there has been a winningBid yet via the timestamp
         if (winningBid.winTimestamp == 0 || (winningBid.winTimestamp != 0 && winningBid.bidAmount != highestBid.amount)) {
-            refundBid(highestBid);
+            // Do not refund anything on the first `placeBid` call.
+            if (highestBid.bidder != 0) {
+                refundBid(highestBid);
+            }
         }
 
         // Update the highest bid and log the event
@@ -49,6 +53,7 @@ contract DomainAuction {
     // See https://ethereum.stackexchange.com/questions/19341/address-send-vs-address-transfer-best-practice-usage
     function refundBid(Bid bid) private {
         bid.bidder.send(bid.amount);
+        emit Refund(now, bid.bidder, bid.amount);
     }
 
     // This will need to be triggered externally every x days
