@@ -1,0 +1,42 @@
+.ethereum-logo {
+    width: 22px;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+
+.account {
+    background: rgba(230,230,255,0.15);
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 30px;
+}
+
+.account-heading {
+    font-family: 'system-ui', sans-serif;
+    font-size: 0.9em;
+    color: rgba(255,255,255,0.6);
+}
+
+.address {
+    font-size: 0.7em;
+}
+
+.account-balance {
+    display: inline-block;
+    padding-left: 10px;
+}
+
+.balance {
+    font-family: 'sf mono', monospace;
+    font-size: 0.9em;
+}
+
+.account-address {
+    padding-left: 3px;
+    font-family: 'sf mono', monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
