@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Text } from 'react-form';
-import { Web3Provider } from 'react-web3';
 import timeago from 'timeago.js';
-import Web3 from 'web3'
 import './HighestBid.css';
 
 class HighestBid extends Component {

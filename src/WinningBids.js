@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { Form, Text } from 'react-form';
-import { Web3Provider } from 'react-web3';
-import Web3 from 'web3'
 import './WinningBids.css';
 
 class WinningBid extends Component {
@@ -14,7 +11,7 @@ class WinningBid extends Component {
               <div className="winning-bid-url">{this.props.url}</div>
               <div className="winning-bid-address">{this.props.address}</div>
             </div>
-          </div>  
+          </div>
         )
     }
 }

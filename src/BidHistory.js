@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { Form, Text } from 'react-form';
-import { Web3Provider } from 'react-web3';
-import Web3 from 'web3'
 import './BidHistory.css';
 
 class Bid extends Component {

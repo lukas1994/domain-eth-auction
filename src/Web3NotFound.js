@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import { Form, Text } from 'react-form';
-import { Web3Provider } from 'react-web3';
-import timeago from 'timeago.js';
-import Web3 from 'web3'
 
 class Web3NotFound extends Component {
   render() {
@@ -14,4 +10,4 @@ class Web3NotFound extends Component {
   }
 }
 
-export default Web3NotFound; 
+export default Web3NotFound;

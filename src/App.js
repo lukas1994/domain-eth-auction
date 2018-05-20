@@ -8,207 +8,13 @@ import WinningBids from './WinningBids.js';
 import Web3NotFound from './Web3NotFound.js';
 import AccountNotFound from './AccountNotFound.js';
 import './App.css';
+import compiledContract from './DomainAuction.json';
 
-const TEST_NETWORK_URL = 'https://ropsten.infura.io/KlHjV3YUnqo1NiSwGRNF';
-const MAIN_NETWORK_URL = 'https://mainnet.infura.io/KlHjV3YUnqo1NiSwGRNF';
+
+const NETWORK_URL = 'https://ropsten.infura.io/KlHjV3YUnqo1NiSwGRNF';
+// const NETWORK_URL = 'https://mainnet.infura.io/KlHjV3YUnqo1NiSwGRNF';
 const CONTRACT_TEST_ADDRESS = '0x5a659e4168fb2deb5793ff3eba3d3323750a3058';
-const CONTRACT_ABI = [
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "timestamp",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "bidder",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "url",
-				"type": "string"
-			}
-		],
-		"name": "BidLog",
-		"type": "event"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "kill",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "pickWinner",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "url",
-				"type": "string"
-			}
-		],
-		"name": "placeBid",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "winTimestamp",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "bidTimestamp",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "bidder",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "url",
-				"type": "string"
-			}
-		],
-		"name": "WinningBidLog",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "constructor"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "highestBid",
-		"outputs": [
-			{
-				"name": "timestamp",
-				"type": "uint256"
-			},
-			{
-				"name": "bidder",
-				"type": "address"
-			},
-			{
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"name": "url",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "winningBid",
-		"outputs": [
-			{
-				"name": "winTimestamp",
-				"type": "uint256"
-			},
-			{
-				"components": [
-					{
-						"name": "timestamp",
-						"type": "uint256"
-					},
-					{
-						"name": "bidder",
-						"type": "address"
-					},
-					{
-						"name": "amount",
-						"type": "uint256"
-					},
-					{
-						"name": "url",
-						"type": "string"
-					}
-				],
-				"name": "bid",
-				"type": "tuple"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
-const history = [
-  {
-    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
-    "amount": 12.45
-  },
-  {
-    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
-    "amount": 12.45
-  },
-  {
-    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
-    "amount": 12.45
-  },
-  {
-    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
-    "amount": 12.45
-  },
-  {
-    "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
-    "amount": 12.45
-  },
-]
+const CONTRACT_ABI = compiledContract.abi
 const winners = [
   {
     "address": "0x65F2eac17eBd78529680223a2B992964aa6A98d3",
@@ -232,7 +38,7 @@ class PlaceBidComponent extends Component {
     const web3 = new Web3(window.web3.currentProvider);
     const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_TEST_ADDRESS)
     this.setState({ web3, contract });
-    
+
     web3.eth.getAccounts().then(accounts => {
       const account = accounts[0]
       this.setState({ account });
@@ -247,7 +53,7 @@ class PlaceBidComponent extends Component {
     contract.methods.placeBid(values.url).send({
       from: this.state.account,
       to: CONTRACT_TEST_ADDRESS,
-      value: values.bid
+      value: this.state.web3.utils.toWei(values.bid, 'ether'),
     }, (err, transactionHash) => {
       console.log(err);
       console.log(transactionHash);
@@ -266,7 +72,7 @@ class PlaceBidComponent extends Component {
           onSubmit={this.handleSubmit.bind(this)}
           render={({ submitForm }) => (
             <form onSubmit={submitForm}>
-              <Text field="bid" placeholder='Bid (in Wei)' />
+              <Text field="bid" placeholder='Bid (in ETH)' />
               <Text field="url" placeholder='Url' />
               <button type="submit">Submit</button>
             </form>
@@ -280,13 +86,13 @@ class PlaceBidComponent extends Component {
 
 class App extends Component {
   componentWillMount() {
-    const web3 = new Web3(new Web3.providers.HttpProvider(TEST_NETWORK_URL));
+    const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL));
     const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_TEST_ADDRESS)
     this.setState({ web3, contract });
 
     contract.getPastEvents('allEvents', {fromBlock: 0, toBlock: 'latest'}).then(events => {
-      const bidEvents = events.filter(event => event.event == 'BidLog').map(event => this.extractBidEvent(event))
-      const winEvents = events.filter(event => event.event == 'WinningBidLog').map(event => this.extractWinEvent(event))
+      const bidEvents = events.filter(event => event.event === 'BidLog').map(event => this.extractBidEvent(event))
+      const winEvents = events.filter(event => event.event === 'WinningBidLog').map(event => this.extractWinEvent(event))
       this.setState({ bidEvents, winEvents })
     })
 
@@ -303,7 +109,7 @@ class App extends Component {
 
   extractBidEvent(event) {
     return {
-      amount: this.state.web3.utils.fromWei(event.returnValues.amount, 'ether'), 
+      amount: this.state.web3.utils.fromWei(event.returnValues.amount, 'ether'),
       address: event.returnValues.bidder,
       timestamp: event.returnValues.timestamp,
       url: event.returnValues.url
@@ -312,7 +118,7 @@ class App extends Component {
 
   extractWinEvent(event) {
     return {
-      amount: this.state.web3.utils.fromWei(event.returnValues.amount, 'ether'), 
+      amount: this.state.web3.utils.fromWei(event.returnValues.amount, 'ether'),
       address: event.returnValues.bidder,
       bidTimestamp: event.returnValues.bidTimestamp,
       winTimestamp: event.returnValues.winTimestamp,
@@ -364,7 +170,7 @@ class App extends Component {
             <HighestBid bid={highestBid.amount} time={highestBid.timestamp}/>
             <BidHistory history={bidEvents}/>
             <WinningBids winners={winners}/>
-          </article> 
+          </article>
         </div>
       </div>
     );
