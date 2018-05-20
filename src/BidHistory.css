@@ -16,7 +16,7 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 30px 1fr 110px;
+    grid-template-columns: 35px 1fr 110px;
 }
 
 .bid-counter {
@@ -32,6 +32,7 @@
     text-overflow: ellipsis;
     font-family: 'sf mono', monospace;
     font-weight: 200;
+    font-size: 0.9em;
 }
 
 .bid-amount {

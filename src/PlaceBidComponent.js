@@ -71,10 +71,10 @@ class PlaceBidComponent extends Component {
           render={({ submitForm }) => (
             <form onSubmit={submitForm}>
               <div className="bid-form-fields">
-                <div className="field-name">Bid:</div>
-                <Text field="bid" className="field bid-field" placeholder='Bid (ETH)' defaultValue={minimumBid}/>
+                <div className="field-name">Bid</div>
+                <Text field="bid" className="field bid-field" type="number" step="0.005"placeholder='Bid (ETH)' min={minimumBid} defaultValue={minimumBid}/>
                 <div className="field-help">Your bid amount in ETH</div>
-                <div className="field-name">URL:</div>
+                <div className="field-name">URL</div>
                 <Text field="url" className="field url-field" placeholder='URL' />
                 <div className="field-help">The URL to point algo.app to</div>
               </div>
