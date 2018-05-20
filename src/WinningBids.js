@@ -3,7 +3,7 @@ import './WinningBids.css';
 
 class WinningBid extends Component {
     render() {
-        const className = this.props.counter === 0 ? "WinningBid current-winner" : "WinningBid"
+        const className = this.props.isCurrentWinner ? "WinningBid current-winner" : "WinningBid"
         return (
           <div className={className}>
             <div className="winning-bid-inner">
@@ -18,8 +18,23 @@ class WinningBid extends Component {
 
 class WinningBids extends Component {
   render() {
-    const winningBids = this.props.winners.map((obj, index) => {
-      return <WinningBid key={index} counter={index} address={obj.address} amount={obj.amount} url={obj.url}/>
+    let winAmount = 0;
+    this.props.winners.forEach(winner => {
+      if (winner.amount > winAmount) {
+        winAmount = winner.amount;
+      }
+    });
+    const reversed = [].concat(this.props.winners).reverse();
+    const winningBids = reversed.map((obj, index) => {
+      return (
+        <WinningBid
+          key={index}
+          isCurrentWinner={obj.amount === winAmount}
+          address={obj.address}
+          amount={obj.amount}
+          url={obj.url}
+        />
+      );
     })
 
     return (
