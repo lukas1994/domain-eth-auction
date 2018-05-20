@@ -129,6 +129,7 @@ class App extends Component {
   render() {
     const bidEvents = this.state.bidEvents || []
     const highestBid = this.state.highestBid || {}
+    const winEvents = this.state.winEvents || []
     return (
       <div className="App">
         <div className="wrapper">
@@ -169,7 +170,7 @@ class App extends Component {
           <article className="content">
             <HighestBid bid={highestBid.amount} time={highestBid.timestamp}/>
             <BidHistory history={bidEvents}/>
-            <WinningBids winners={winners}/>
+            <WinningBids winners={winEvents}/>
           </article>
         </div>
       </div>

@@ -33,7 +33,7 @@ contract DomainAuction {
 
         // Refund the current highest bid unless it's also the current winning bid
         // Have to check whether there has been a winningBid yet via the timestamp
-        if (winningBid.winTimestamp != 0 && winningBid.bidAmount != highestBid.amount) {
+        if (winningBid.winTimestamp == 0 || (winningBid.winTimestamp != 0 && winningBid.bidAmount != highestBid.amount)) {
             refundBid(highestBid);
         }
 
@@ -44,8 +44,11 @@ contract DomainAuction {
 
     // This might fail if the bidder is trying some contract bullshit, but they do this
     // at their own risk. It won't fail if the bidder is a non-contract address.
+    // It is very important to use `send` instead of `transfer`. Otherwise this could fail
+    // and this contract could get hijacked.
+    // See https://ethereum.stackexchange.com/questions/19341/address-send-vs-address-transfer-best-practice-usage
     function refundBid(Bid bid) private {
-        bid.bidder.transfer(bid.amount);
+        bid.bidder.send(bid.amount);
     }
 
     // This will need to be triggered externally every x days
