@@ -8,6 +8,7 @@ import WinningBids from './WinningBids.js';
 import Web3NotFound from './Web3NotFound.js';
 import AccountNotFound from './AccountNotFound.js';
 import './App.css';
+import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
 import constants from './constants'
 
@@ -143,10 +144,14 @@ class App extends Component {
               </div>
             </div>
             <hr/>
+            <div className="question">
+              place bid
+            </div>
             <Web3Provider
               web3UnavailableScreen={Web3NotFound}
               accountUnavailableScreen={AccountNotFound}
             >
+              <MetamaskStatus status='connected'/>
               <PlaceBidComponent />
             </Web3Provider>
           </aside>
