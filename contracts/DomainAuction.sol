@@ -12,7 +12,10 @@ contract DomainAuction {
 
     struct WinningBid {
         uint winTimestamp;
-        Bid bid;
+        uint bidTimestamp;
+        address bidder;
+        uint bidAmount;
+        string url;
     }
 
     Bid public highestBid;
@@ -30,7 +33,7 @@ contract DomainAuction {
 
         // Refund the current highest bid unless it's also the current winning bid
         // Have to check whether there has been a winningBid yet via the timestamp
-        if (winningBid.winTimestamp != 0 && winningBid.bid.amount != highestBid.amount) {
+        if (winningBid.winTimestamp != 0 && winningBid.bidAmount != highestBid.amount) {
             refundBid(highestBid);
         }
 
@@ -44,21 +47,21 @@ contract DomainAuction {
     function refundBid(Bid bid) private {
         bid.bidder.transfer(bid.amount);
     }
-    
+
     // This will need to be triggered externally every x days
     function pickWinner() public payable {
         require(msg.sender == owner);
-        
+
         // Have to store the new winning bid in memory in order to emit it as part
         // of an event. Can't emit an event straight from a stored variable.
-        WinningBid memory newWinningBid = WinningBid(now, highestBid);
+        WinningBid memory newWinningBid = WinningBid(now, highestBid.timestamp, highestBid.bidder, highestBid.amount, highestBid.url);
         winningBid = newWinningBid;
         emit WinningBidLog(
-            newWinningBid.winTimestamp, 
-            newWinningBid.bid.timestamp, 
-            newWinningBid.bid.bidder, 
-            newWinningBid.bid.amount, 
-            newWinningBid.bid.url
+            newWinningBid.winTimestamp,
+            newWinningBid.bidTimestamp,
+            newWinningBid.bidder,
+            newWinningBid.bidAmount,
+            newWinningBid.url
         );
     }
 
