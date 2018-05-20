@@ -64,29 +64,38 @@ class PlaceBidComponent extends Component {
     render () {
       const account = this.state.account
       const balance = this.state.balance ? this.state.web3.utils.fromWei((this.state.balance), 'ether') : 0
-      const minimumBid = this.props.minimumBid || 0;
-  
+      const minimumBid = Number(this.props.minimumBid).toPrecision(4) || 0;
+      const bidForm = 
+        <Form
+          onSubmit={this.handleSubmit.bind(this)}
+          render={({ submitForm }) => (
+            <form onSubmit={submitForm}>
+              <div className="bid-form-fields">
+                <div className="field-name">Bid:</div>
+                <Text field="bid" className="field bid-field" placeholder='Bid (ETH)' defaultValue={minimumBid}/>
+                <div className="field-help">Your bid amount in ETH</div>
+                <div className="field-name">URL:</div>
+                <Text field="url" className="field url-field" placeholder='URL' />
+                <div className="field-help">The URL to point algo.app to</div>
+              </div>
+              <button type="submit" className="bid-form-submit">Place Bid</button>
+            </form>
+          )}
+        />
+      const topupNotice = 
+        <div className="topup-notice">
+          The best way to get more ether is on Coinbase. Make an account and buy some in exchange for fiat, and 
+          then transfer it to your MetaMask wallet. It won't take more than a few minutes!
+        </div>
       return !account ? (<p>loading account...</p>) : (
         <div>
           <AccountDetailsComponent address={account} balance={balance}/>
-          <Form
-            onSubmit={this.handleSubmit.bind(this)}
-            render={({ submitForm }) => (
-              <form onSubmit={submitForm} className="bid-form">
-                <div className="bid-form-fields">
-                  <div className="field-name">Bid:</div>
-                  <Text field="bid" className="field bid-field" placeholder='Bid (ETH)' defaultValue={minimumBid}/>
-                  <div className="field-help">Your bid amount in ETH</div>
-                  <div className="field-name">URL:</div>
-                  <Text field="url" className="field url-field" placeholder='URL' />
-                  <div className="field-help">The URL to point algo.app to</div>
-                </div>
-                <button type="submit" className="bid-form-submit">Place Bid</button>
-              </form>
-            )}
-          />
-          <p>Minimum Bid: {minimumBid} ETH</p>
-          {balance < minimumBid ? "Your account balance is lower than the current minimum bid." : null}
+          <div className="bid-form">
+            <div className="minimum-bid">Minimum Bid:<span className="mono"> {minimumBid} ETH</span></div>
+            {balance < minimumBid ? <div className="balance-notice">Your account balance is lower than the minimum bid.</div> : null}
+            <hr className="form-divider"/>
+            {balance < minimumBid ? topupNotice : bidForm}
+          </div>
         </div>
       )
   
