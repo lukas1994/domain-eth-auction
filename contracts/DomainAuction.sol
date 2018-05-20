@@ -42,7 +42,7 @@ contract DomainAuction {
     // This might fail if the bidder is trying some contract bullshit, but they do this
     // at their own risk. It won't fail if the bidder is a non-contract address.
     function refundBid(Bid bid) private {
-        bid.bidder.send(bid.amount);
+        bid.bidder.transfer(bid.amount);
     }
     
     // This will need to be triggered externally every x days
