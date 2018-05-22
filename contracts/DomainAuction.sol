@@ -29,7 +29,7 @@ contract DomainAuction {
     ///////////////////////////////////
 
     function placeBid(string url) public payable {
-        require(msg.value > ((highestBid.amount * 11) / 10));
+        require(msg.value >= ((highestBid.amount * 11) / 10));
         Bid memory newBid = Bid(now, msg.sender, msg.value, url);
 
         // Refund the current highest bid.

@@ -25,7 +25,6 @@
 
 .bid-form-fields {
     display: grid;
-    padding-top: 5px;
     grid-template-columns: 60px 1fr 140px;
     grid-template-rows: 1fr 1fr;
     grid-row-gap: 10px;
@@ -101,8 +100,8 @@
 }
 
 .form-divider {
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .minimum-bid {
@@ -125,4 +124,53 @@
     padding-right: 10px;
     line-height: 1.4;
     padding-bottom: 10px;
+}
+
+.form-submitted {
+    background: rgba(255,255,255,0.5);
+}
+
+.form-error {
+    color: rgb(229, 102, 105);
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.success-modal {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    max-width: 400px;
+    max-height: 250px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    color: rgb(45,45,45);
+    outline: 0;
+    border: 0;
+}
+
+.success-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.85);
+}
+
+.success-modal-title {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.success-modal-description {
+    font-size: 0.9em;
+    text-align: center;
 }

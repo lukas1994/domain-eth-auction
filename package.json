@@ -6,6 +6,7 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-form": "^3.5.5",
+    "react-modal": "^3.4.4",
     "react-scripts": "1.1.4",
     "react-web3": "^0.4.5",
     "timeago.js": "^3.0.2",

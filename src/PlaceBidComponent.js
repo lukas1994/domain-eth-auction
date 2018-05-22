@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Text } from 'react-form';
+import Modal from 'react-modal';
 import { Web3Provider } from 'react-web3';
 import Web3 from 'web3';
 import Web3NotFound from './Web3NotFound.js';
@@ -10,6 +11,8 @@ import constants from './constants'
 import './PlaceBidComponent.css';
 
 const ethereumLogo = require('./ethereum-logo.svg');
+
+Modal.setAppElement('#root')
 
 function getContract(web3) {
     return new web3.eth.Contract(compiledContract.abi, constants.CONTRACT_ADDRESS);
@@ -37,7 +40,7 @@ class PlaceBidComponent extends Component {
     componentWillMount() {
       this.web3 = new Web3(window.web3.currentProvider);
       this.contract = getContract(this.web3);
-
+      this.setState({bidFlow: {}})
       this.web3.eth.getAccounts().then(accounts => {
         if (accounts.length > 0) {
           const account = accounts[0];
@@ -50,14 +53,24 @@ class PlaceBidComponent extends Component {
     }
 
     handleSubmit(values) {
+      this.setState({bidFlow: {submitted: true}})
       this.contract.methods.placeBid(values.url).send({
         from: this.state.account,
         to: constants.CONTRACT_ADDRESS,
         value: this.web3.utils.toWei(values.bid, 'ether'),
-      }, (err, transactionHash) => {
-        console.log(err);
-        console.log(transactionHash);
+      }, (error, transactionHash) => {
+        console.log(error, Object.keys(error), typeof(error))
+        const successObj = {
+          url: values.url,
+          amount: values.bid,
+          transactionHash
+        }
+        error ? this.setState({bidFlow: {error}}) : this.setState({bidFlow: {success: successObj}})
       })
+    }
+
+    closeModal() {
+      this.setState({bidFlow: {}});
     }
 
     render () {
@@ -72,13 +85,15 @@ class PlaceBidComponent extends Component {
             <form onSubmit={submitForm}>
               <div className="bid-form-fields">
                 <div className="field-name">Bid</div>
-                <Text field="bid" className="field bid-field" type="number" step="0.005"placeholder='Bid (ETH)' min={minimumBid} defaultValue={minimumBid}/>
+                <Text field="bid" required className="field bid-field" type="number" step="0.00005"placeholder='Bid (ETH)' min={minimumBid} defaultValue={minimumBid}/>
                 <div className="field-help">Your bid amount in ETH</div>
                 <div className="field-name">URL</div>
-                <Text field="url" className="field url-field" placeholder='URL' />
+                <Text field="url" required className="field url-field" placeholder='URL' />
                 <div className="field-help">The URL to point algo.app to</div>
               </div>
-              <button type="submit" className="bid-form-submit">Place Bid</button>
+              <button type="submit" className="bid-form-submit">
+                {this.state.bidFlow['submitted'] ? 'Go to metamask' : 'Place bid'}
+              </button>
             </form>
           )}
         />
@@ -88,6 +103,11 @@ class PlaceBidComponent extends Component {
           you'll need to buy ETH from an exchange (like Coinbase) and transfer it to your MetaMask wallet. This only takes
           a few minutes.
         </div>
+      const formError = 
+          <div className="form-error">
+            <hr className="form-divider"/>
+            error
+          </div>
       return !account ? (<p>loading account...</p>) : (
         <div>
           <AccountDetailsComponent address={account} balance={balance}/>
@@ -96,6 +116,24 @@ class PlaceBidComponent extends Component {
             {balance < minimumBid ? <div className="balance-notice">Your account balance is lower than the minimum bid.</div> : null}
             <hr className="form-divider"/>
             {balance < minimumBid ? topupNotice : bidForm}
+            {this.state.bidFlow['error'] ? formError : null}
+            <Modal
+              isOpen={true}
+              contentLabel="Bid successfully placed"
+              className="success-modal"
+              overlayClassName="success-modal-overlay"
+            >
+              <div className="success-modal-title">bid successful</div>
+              <div className="success-moodal-bid-details">
+                amount: 1.5 ETH
+              </div>
+              <div className="success-modal-description">
+                It can take up to a minute for it to be fully registered on the blockchain, 
+                but you can track this via the transaction link above. <br/><br/>If you have the highest bid when the next winner is selected, 
+                the algo.app domain will point to URL.
+              </div>
+              transaction hash
+            </Modal>
           </div>
         </div>
       )
