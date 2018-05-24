@@ -143,11 +143,11 @@
     bottom: auto;
     transform: translate(-50%, -50%);
     position: absolute;
-    max-width: 400px;
-    max-height: 250px;
+    width: 460px;
+    height: auto;
     padding: 20px;
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     color: rgb(45,45,45);
     outline: 0;
     border: 0;
@@ -160,17 +160,64 @@
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,0.85);
+    scroll-behavior: unset;
 }
 
 .success-modal-title {
     text-align: center;
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 1.2em;
-    margin-bottom: 10px;
+    font-size: 1em;
+    margin: -20px;
+    margin-bottom: 20px;
+    background: rgb(233,196,106);
+    color: rgb(38,70,82);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 15px;
+}
+
+.ReactModal__Body--open {
+    overflow-y: hidden;
 }
 
 .success-modal-description {
     font-size: 0.9em;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 1.4; 
+}
+
+.success-modal-bid-details {
+    background: rgb(230, 230, 230);
+    border-radius: 5px;
+    padding: 10px;
+    display: grid;
+    font-size: 0.9em;
+    grid-template-columns: 1fr 1fr 45px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.transaction-link {
     text-align: center;
+    font-size: 0.9em;
+    text-decoration: underline;
+}
+
+.detail strong {
+    font-weight: 500;
+}
+
+.close-modal {
+    background: rgb(38,70,82);
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 auto;
+    display: block;
+    color: white;
+    margin-top: 15px;
+    font-size: 0.9em;
 }

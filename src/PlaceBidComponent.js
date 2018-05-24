@@ -37,6 +37,10 @@ class AccountDetailsComponent extends Component {
 }
 
 class PlaceBidComponent extends Component {
+    constructor() {
+      super();
+      this.closeModal = this.closeModal.bind(this);
+    }
     componentWillMount() {
       this.web3 = new Web3(window.web3.currentProvider);
       this.contract = getContract(this.web3);
@@ -59,7 +63,6 @@ class PlaceBidComponent extends Component {
         to: constants.CONTRACT_ADDRESS,
         value: this.web3.utils.toWei(values.bid, 'ether'),
       }, (error, transactionHash) => {
-        console.log(error, Object.keys(error), typeof(error))
         const successObj = {
           url: values.url,
           amount: values.bid,
@@ -118,21 +121,33 @@ class PlaceBidComponent extends Component {
             {balance < minimumBid ? topupNotice : bidForm}
             {this.state.bidFlow['error'] ? formError : null}
             <Modal
-              isOpen={true}
+              isOpen={this.state.bidFlow.success}
               contentLabel="Bid successfully placed"
               className="success-modal"
               overlayClassName="success-modal-overlay"
             >
-              <div className="success-modal-title">bid successful</div>
-              <div className="success-moodal-bid-details">
-                amount: 1.5 ETH
+              <div className="success-modal-title">bid successful!</div>
+              <div className="success-modal-bid-details">
+                <div className="detail">
+                  <strong>Amount:</strong>
+                  <span class="mono"> {this.state.bidFlow.success ? Number(this.state.bidFlow.success.amount).toPrecision(4) : null} ETH</span>
+                </div>
+                <div className="detail">
+                  <strong>URL: </strong> 
+                  {this.state.bidFlow.success ? this.state.bidFlow.success.url : null}
+                </div>
+                <div className="detail">
+                  <div class="transaction-link">
+                    <a href={"https://ropsten.etherscan.io/tx/" + (this.state.bidFlow.success ? this.state.bidFlow.success.transactionHash : '')} target="_blank">Track</a>
+                  </div>
+                </div>
               </div>
               <div className="success-modal-description">
-                It can take up to a minute for it to be fully registered on the blockchain, 
-                but you can track this via the transaction link above. <br/><br/>If you have the highest bid when the next winner is selected, 
-                the algo.app domain will point to URL.
+                Your transaction can take up to a minute to propagate.<br/><br/>
+                If you have the highest bid when the next winner is selected, the algo.app domain will point to your URL for 24 hours.
+                If you are outbid at any point, you will be refunded your full bid amount.
               </div>
-              transaction hash
+              <button className="close-modal" onClick={this.closeModal}>Close modal</button>
             </Modal>
           </div>
         </div>
