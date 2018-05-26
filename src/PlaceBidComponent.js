@@ -11,6 +11,7 @@ import constants from './constants'
 import './PlaceBidComponent.css';
 
 const ethereumLogo = require('./ethereum-logo.svg');
+const coinbaseLink = 'https://www.coinbase.com/join/536747e12c1c882c4000359a';
 
 Modal.setAppElement('#root')
 
@@ -103,7 +104,7 @@ class PlaceBidComponent extends Component {
       const topupNotice =
         <div className="topup-notice">
           If you're in the US, you can purchase ETH from MetaMask itself (via Coinbase). For everyone else,
-          you'll need to buy ETH from an exchange (like Coinbase) and transfer it to your MetaMask wallet. This only takes
+          you'll need to buy ETH from an exchange (like <a href={coinbaseLink} target="_blank">Coinbase</a>) and transfer it to your MetaMask wallet. This only takes
           a few minutes.
         </div>
       const formError = 
@@ -147,7 +148,7 @@ class PlaceBidComponent extends Component {
                 If you have the highest bid when the next winner is selected, the algo.app domain will point to your URL for 24 hours.
                 If you are outbid at any point, you will be refunded your full bid amount.
               </div>
-              <button className="close-modal" onClick={this.closeModal}>Close modal</button>
+              <button className="close-modal" onClick={this.closeModal}>Got it</button>
             </Modal>
           </div>
         </div>

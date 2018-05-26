@@ -219,5 +219,10 @@
     display: block;
     color: white;
     margin-top: 15px;
-    font-size: 0.9em;
+    font-size: 0.85em;
+}
+
+.topup-notice a {
+    color: rgb(233,196,106);
+    text-decoration: underline;
 }

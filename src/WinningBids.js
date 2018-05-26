@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import timeago from 'timeago.js';
 import './WinningBids.css';
 
 class WinningBid extends Component {
@@ -7,6 +8,10 @@ class WinningBid extends Component {
         return (
           <div className={className}>
             <div className="winning-bid-inner">
+              <div className="winning-bid-top-row">
+                {this.props.isCurrentWinner ? <div className="current-tag">current</div> : null}
+                <div className="winning-bid-timestamp">{timeago().format(this.props.winTimestamp * 1000)}</div>
+              </div>
               <div className="winning-bid-amount">{this.props.amount} ETH</div>
               <div className="winning-bid-url">{this.props.url}</div>
               <div className="winning-bid-address">{this.props.address}</div>
@@ -33,6 +38,7 @@ class WinningBids extends Component {
           address={obj.address}
           amount={obj.amount}
           url={obj.url}
+          winTimestamp={obj.winTimestamp}
         />
       );
     })
