@@ -20,7 +20,6 @@ function getContract(web3) {
 class App extends Component {
   componentWillMount() {
     this.web3 = new Web3(new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws'));
-    // this.web3 = new Web3(new Web3.providers.HttpProvider(constants.NETWORK_URL));
     this.contract = getContract(this.web3);
 
     // load past events
