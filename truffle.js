@@ -1,3 +1,4 @@
+require('dotenv').config();
 const HDWalletProvider = require("truffle-hdwallet-provider");
 
 module.exports = {
@@ -10,7 +11,8 @@ module.exports = {
     },
     ropsten: {
       provider: function() {
-        return new HDWalletProvider(secrets.MNEMONIC, "https://ropsten.infura.io/" + require("./src/secrets.js").INFURA_API_KEY);
+        const secrets = require("./src/secrets.js");
+        return new HDWalletProvider(secrets.MNEMONIC, "https://ropsten.infura.io/" + secrets.INFURA_API_KEY);
       },
       network_id: 3,
       gas: 1828127,

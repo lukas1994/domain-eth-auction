@@ -10,6 +10,10 @@ module.exports = {
 };
 ```
 
+create `.env` file with the following content
+```
+REACT_APP_CONTRACT_ADDRESS=your ETH contract address
+```
 ### deploy the contract
 
 ```bash
@@ -35,3 +39,15 @@ truffle exec pickWinner.js --network ropsten
 ```bash
 truffle test
 ```
+
+### deploy the website
+```bash
+truffle compile && yarn build
+# then host the ./build directory
+```
+
+### development mode for the website
+```bash
+yarn start
+```
+

@@ -7,7 +7,6 @@ import Web3NotFound from './Web3NotFound.js';
 import AccountNotFound from './AccountNotFound.js';
 import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
-import constants from './constants'
 import './PlaceBidComponent.css';
 
 const ethereumLogo = require('./ethereum-logo.svg');
@@ -16,7 +15,7 @@ const coinbaseLink = 'https://www.coinbase.com/join/536747e12c1c882c4000359a';
 Modal.setAppElement('#root')
 
 function getContract(web3) {
-    return new web3.eth.Contract(compiledContract.abi, constants.CONTRACT_ADDRESS);
+    return new web3.eth.Contract(compiledContract.abi, process.env.REACT_APP_CONTRACT_ADDRESS);
 }
 
 class AccountDetailsComponent extends Component {
@@ -61,7 +60,7 @@ class PlaceBidComponent extends Component {
       this.setState({bidFlow: {submitted: true}})
       this.contract.methods.placeBid(values.url).send({
         from: this.state.account,
-        to: constants.CONTRACT_ADDRESS,
+        to: process.env.REACT_APP_CONTRACT_ADDRESS,
         value: this.web3.utils.toWei(values.bid, 'ether'),
       }, (error, transactionHash) => {
         const successObj = {
@@ -107,7 +106,7 @@ class PlaceBidComponent extends Component {
           you'll need to buy ETH from an exchange (like <a href={coinbaseLink} target="_blank">Coinbase</a>) and transfer it to your MetaMask wallet. This only takes
           a few minutes.
         </div>
-      const formError = 
+      const formError =
           <div className="form-error">
             <hr className="form-divider"/>
             error
@@ -134,7 +133,7 @@ class PlaceBidComponent extends Component {
                   <span class="mono"> {this.state.bidFlow.success ? Number(this.state.bidFlow.success.amount).toPrecision(4) : null} ETH</span>
                 </div>
                 <div className="detail">
-                  <strong>URL: </strong> 
+                  <strong>URL: </strong>
                   {this.state.bidFlow.success ? this.state.bidFlow.success.url : null}
                 </div>
                 <div className="detail">
