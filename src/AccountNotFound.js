@@ -13,7 +13,7 @@ class Web3NotFound extends Component {
           Your MetaMask is locked — just open the extension and follow the instructions. You're almost there!
           <div className="metamask-button-wrapper">
             <button className="metamask-button-locked">
-              <img src={metamaskLogo} className="metamask-logo"/>
+              <img src={metamaskLogo} className="metamask-logo" alt=""/>
               <span className="metamask-button-text">MetaMask locked</span>
             </button>
           </div>

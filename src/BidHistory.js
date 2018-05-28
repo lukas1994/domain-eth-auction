@@ -31,8 +31,8 @@ var timeagoInstance = timeago();
 class Bid extends Component {
   render() {
     const urlDisplay = this.props.url.split('://').pop()
-    const urlLink = (this.props.url.startsWith('http://') || this.props.url.startsWith('https://')) 
-                    ? this.props.url 
+    const urlLink = (this.props.url.startsWith('http://') || this.props.url.startsWith('https://'))
+                    ? this.props.url
                     : 'http://' + this.props.url
     const addressLink = process.env.REACT_APP_ETHERSCAN_ADDRESS_URI + this.props.address
     return (
@@ -45,7 +45,7 @@ class Bid extends Component {
           <span className="bid-url"><a href={urlLink} target="_blank">{urlDisplay}</a></span>
           <span className="bid-amount">{Number(this.props.amount).toPrecision(3)} ETH</span>
           <span className="bid-timestamp">
-            <img src={clockIcon} className="timestamp-icon"/>
+            <img src={clockIcon} className="timestamp-icon" alt=""/>
             {timeagoInstance.format(this.props.timestamp * 1000, 'short')}
           </span>
         </div>
@@ -57,13 +57,13 @@ class Bid extends Component {
 class BidHistory extends Component {
   render() {
     const historyItems = this.props.history.map((obj, index) => {
-      return <Bid 
-              key={index} 
-              counter={index + 1} 
-              timestamp={obj.timestamp} 
-              address={obj.address} 
-              url={obj.url} 
-              amount={obj.amount} 
+      return <Bid
+              key={index}
+              counter={index + 1}
+              timestamp={obj.timestamp}
+              address={obj.address}
+              url={obj.url}
+              amount={obj.amount}
               />
     }).reverse()
     console.log(historyItems);

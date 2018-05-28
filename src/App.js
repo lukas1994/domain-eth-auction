@@ -92,14 +92,14 @@ class App extends Component {
       <div className="App">
         <div className="wrapper">
           <aside className="side">
-            <h1>bid.algo.app</h1>
+            <h1>bid.{process.env.REACT_APP_DOMAIN_NAME}</h1>
             <h2>domain auction on the<br/>ethereum blockchain</h2>
             <div className="faq">
               <div className="question">
                 how does it work?
               </div>
               <div className="answer">
-                This is a rolling auction — every 24 hours, the highest bidder controls where the <a className="highlight" href="https://algo.app" target="_blank">algo.app</a> domain points to.
+                This is a rolling auction — every 24 hours, the highest bidder controls where the <a className="highlight" href={`https://${process.env.REACT_APP_DOMAIN_NAME}`} target="_blank">{process.env.REACT_APP_DOMAIN_NAME}</a> domain points to.
                 Bids can be placed anytime.
               </div>
             </div>

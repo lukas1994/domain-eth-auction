@@ -26,7 +26,7 @@ class AccountDetailsComponent extends Component {
           <div className="account-heading">balance</div>
           <span className="balance">{Number(this.props.balance).toPrecision(2)} ETH</span>
         </div>
-        <img src={ethereumLogo} className="ethereum-logo"/>
+        <img src={ethereumLogo} className="ethereum-logo" alt=""/>
       </div>
     )
   }
@@ -111,7 +111,7 @@ class PlaceBidComponent extends Component {
                 <div className="field-help">Your bid amount in ETH</div>
                 <div className="field-name">URL</div>
                 <Text field="url" required className={this.state.validationError ? "field url-field invalid-field" : "field url-field"} placeholder='example.com' validate={this.validateUrl.bind(this)}/>
-                <div className="field-help">The URL to point algo.app to</div>
+                <div className="field-help">The URL to point {process.env.REACT_APP_DOMAIN_NAME} to</div>
               </div>
               <button type="submit" className="bid-form-submit">
                 {this.state.bidFlow['submitted'] ? 'Go to metamask' : 'Place bid'}
@@ -163,7 +163,7 @@ class PlaceBidComponent extends Component {
               </div>
               <div className="success-modal-description">
                 Your transaction can take up to a minute to propagate.<br/><br/>
-                If you have the highest bid when the next winner is selected, the algo.app domain will point to your URL for 24 hours.
+                If you have the highest bid when the next winner is selected, the {process.env.REACT_APP_DOMAIN_NAME} domain will point to your URL for 24 hours.
                 If you are outbid at any point, you will be refunded your full bid amount.
               </div>
               <button className="close-modal" onClick={this.closeModal}>Got it</button>

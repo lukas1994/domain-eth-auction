@@ -15,6 +15,7 @@ create `.env` file with the following content
 REACT_APP_CONTRACT_ADDRESS=your ETH contract address
 REACT_APP_ETHERSCAN_ADDRESS_URI=https://[ropsten].etherscan.io/address/
 REACT_APP_ETHERSCAN_TRANSACTION_URI=https://[ropsten].etherscan.io/tx/
+REACT_APP_DOMAIN_NAME=the domain name for the auction
 ```
 ### deploy the contract
 
@@ -45,7 +46,7 @@ truffle test
 ### deploy the website
 ```bash
 truffle compile && yarn build
-# then host the ./build directory
+# then host the ./build directory as bid.{domain name}
 ```
 
 ### development mode for the website
