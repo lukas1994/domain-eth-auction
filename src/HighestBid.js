@@ -7,8 +7,12 @@ class HighestBid extends Component {
     return (
       <div className="HighestBid">
         <div className="highest-bid-title">current bid</div>
-        <div className="highest-bid-amount">{Number(this.props.bid).toPrecision(4)} ETH</div>
-        <div className="highest-bid-time">{timeago().format(this.props.time * 1000)}</div>
+        <div className="highest-bid-amount">
+          {Number(this.props.bid).toPrecision(4)} ETH
+        </div>
+        <div className="highest-bid-time">
+          {timeago().format(this.props.time * 1000)}
+        </div>
       </div>
     );
   }

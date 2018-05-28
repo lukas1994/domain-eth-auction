@@ -6,23 +6,19 @@ class MetamaskStatus extends Component {
     const className = 'metamask-status metamask-' + this.props.status;
     let statusText = 'Loading...';
     switch (this.props.status) {
-        case 'not-found':
-            statusText = 'MetaMask not found';
-            break;
-        case 'locked':
-            statusText = 'MetaMask is locked';
-            break;
-        case 'connected':
-            statusText = 'MetaMask connected';
-            break;
-        default:
-            statusText = '???';
+      case 'not-found':
+        statusText = 'MetaMask not found';
+        break;
+      case 'locked':
+        statusText = 'MetaMask is locked';
+        break;
+      case 'connected':
+        statusText = 'MetaMask connected';
+        break;
+      default:
+        statusText = '???';
     }
-    return (
-        <div className={className}>
-            {statusText}
-        </div>
-    );
+    return <div className={className}>{statusText}</div>;
   }
 }
 

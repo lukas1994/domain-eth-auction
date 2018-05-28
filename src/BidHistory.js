@@ -22,7 +22,7 @@ var locale = function(number, index, total_sec) {
     ['1 month ago', 'in 1 month'],
     ['%s months ago', 'in %s months'],
     ['1 year ago', 'in 1 year'],
-    ['%s years ago', 'in %s years']
+    ['%s years ago', 'in %s years'],
   ][index];
 };
 timeago.register('short', locale);
@@ -30,11 +30,14 @@ var timeagoInstance = timeago();
 
 class Bid extends Component {
   render() {
-    const urlDisplay = this.props.url.split('://').pop()
-    const urlLink = (this.props.url.startsWith('http://') || this.props.url.startsWith('https://'))
-                    ? this.props.url
-                    : 'http://' + this.props.url
-    const addressLink = process.env.REACT_APP_ETHERSCAN_ADDRESS_URI + this.props.address
+    const urlDisplay = this.props.url.split('://').pop();
+    const urlLink =
+      this.props.url.startsWith('http://') ||
+      this.props.url.startsWith('https://')
+        ? this.props.url
+        : 'http://' + this.props.url;
+    const addressLink =
+      process.env.REACT_APP_ETHERSCAN_ADDRESS_URI + this.props.address;
     return (
       <div className="Bid">
         <div className="bid-inner">
@@ -42,37 +45,45 @@ class Bid extends Component {
           <a className="bid-address" href={addressLink} target="_blank">
             {this.props.address}
           </a>
-          <span className="bid-url"><a href={urlLink} target="_blank">{urlDisplay}</a></span>
-          <span className="bid-amount">{Number(this.props.amount).toPrecision(3)} ETH</span>
+          <span className="bid-url">
+            <a href={urlLink} target="_blank">
+              {urlDisplay}
+            </a>
+          </span>
+          <span className="bid-amount">
+            {Number(this.props.amount).toPrecision(3)} ETH
+          </span>
           <span className="bid-timestamp">
-            <img src={clockIcon} className="timestamp-icon" alt=""/>
+            <img src={clockIcon} className="timestamp-icon" alt="" />
             {timeagoInstance.format(this.props.timestamp * 1000, 'short')}
           </span>
         </div>
       </div>
-    )
+    );
   }
 }
 
 class BidHistory extends Component {
   render() {
-    const historyItems = this.props.history.map((obj, index) => {
-      return <Bid
-              key={index}
-              counter={index + 1}
-              timestamp={obj.timestamp}
-              address={obj.address}
-              url={obj.url}
-              amount={obj.amount}
-              />
-    }).reverse()
+    const historyItems = this.props.history
+      .map((obj, index) => {
+        return (
+          <Bid
+            key={index}
+            counter={index + 1}
+            timestamp={obj.timestamp}
+            address={obj.address}
+            url={obj.url}
+            amount={obj.amount}
+          />
+        );
+      })
+      .reverse();
     console.log(historyItems);
     return (
       <div className="BidHistory">
         <h3>recent bids</h3>
-        <div className="history-wrapper">
-          {historyItems.slice(0,12)}
-        </div>
+        <div className="history-wrapper">{historyItems.slice(0, 12)}</div>
       </div>
     );
   }
