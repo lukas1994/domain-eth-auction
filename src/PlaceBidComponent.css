@@ -95,6 +95,10 @@
     border-bottom-left-radius: 5px;
 }
 
+.invalid-field {
+    color: rgb(209, 82, 85);
+}
+
 .field-help {
     font-size: 0.8em;
     font-weight: 400;

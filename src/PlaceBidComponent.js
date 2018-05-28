@@ -57,15 +57,38 @@ class PlaceBidComponent extends Component {
       this.contract.methods.placeBid(values.url).send({
         from: this.state.account,
         to: process.env.REACT_APP_CONTRACT_ADDRESS,
-        value: this.web3.utils.toWei(values.bid, 'ether'),
+        value: this.web3.utils.toWei(String(values.bid), 'ether'),
       }, (error, transactionHash) => {
         const successObj = {
           url: values.url,
           amount: values.bid,
           transactionHash
         }
-        error ? this.setState({bidFlow: {error}}) : this.setState({bidFlow: {success: successObj}})
+        if (error) {
+          let errorMessage = 'Something went wrong :('
+          if (error.message.includes('User denied transaction') || error.message.includes('Request has been rejected.') || error.message.includes('transaction has been discarded') || error.message.includes('Transaction not confirmed')) {
+            errorMessage = 'User aborted transaction.'
+          } else if (error.message.includes('insufficient funds for gas')){
+            errorMessage = 'Insufficient funds for gas'
+          } else if (error.message.includes('intrinsic gas too low')) {
+            errorMessage = 'Gas too low'
+          }
+          this.setState({bidFlow: {error: errorMessage}})
+        } else {
+          this.setState({bidFlow: {success: successObj}})
+        }
       })
+    }
+
+    validateUrl(url) {
+      const urlPattern = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+      if (!urlPattern.test(url)) {
+        const message = 'Make sure your URL is valid!'
+        this.setState({validationError: message})
+        return message
+      } else {
+        this.setState({validationError: null})
+      }
     }
 
     closeModal() {
@@ -80,14 +103,14 @@ class PlaceBidComponent extends Component {
       const bidForm =
         <Form
           onSubmit={this.handleSubmit.bind(this)}
-          render={({ submitForm }) => (
-            <form onSubmit={submitForm}>
+          render={formApi => (
+            <form onSubmit={formApi.submitForm}>
               <div className="bid-form-fields">
                 <div className="field-name">Bid</div>
-                <Text field="bid" required className="field bid-field" type="number" step="0.00005"placeholder='Bid (ETH)' min={minimumBid} defaultValue={minimumBid}/>
+                <Text field="bid" required className="field bid-field" type="number" step="0.00000001" placeholder='Bid (ETH)' min={this.props.minimumBid} defaultValue={this.props.minimumBid}/>
                 <div className="field-help">Your bid amount in ETH</div>
                 <div className="field-name">URL</div>
-                <Text field="url" required className="field url-field" placeholder='example.com'/>
+                <Text field="url" required className={this.state.validationError ? "field url-field invalid-field" : "field url-field"} placeholder='example.com' validate={this.validateUrl.bind(this)}/>
                 <div className="field-help">The URL to point algo.app to</div>
               </div>
               <button type="submit" className="bid-form-submit">
@@ -105,17 +128,17 @@ class PlaceBidComponent extends Component {
       const formError =
           <div className="form-error">
             <hr className="form-divider"/>
-            error
+            {this.state.bidFlow.error || null}
           </div>
       return !account ? (<p>loading account...</p>) : (
         <div>
           <AccountDetailsComponent address={account} balance={balance}/>
           <div className="bid-form">
-            <div className="minimum-bid">Minimum Bid:<span className="mono"> {minimumBid} ETH</span></div>
-            {balance < minimumBid ? <div className="balance-notice">Your account balance is lower than the minimum bid.</div> : null}
+            <div className="minimum-bid">Minimum Bid:<span className="mono"> ~{minimumBid} ETH</span></div>
+            {balance < this.props.minimumBid ? <div className="balance-notice">Your account balance is lower than the minimum bid.</div> : null}
             <hr className="form-divider"/>
-            {balance < minimumBid ? topupNotice : bidForm}
-            {this.state.bidFlow['error'] ? formError : null}
+            {balance < this.props.minimumBid ? topupNotice : bidForm}
+            {this.state.bidFlow.error ? formError : null}
             <Modal
               isOpen={this.state.bidFlow.success}
               contentLabel="Bid successfully placed"
@@ -134,7 +157,7 @@ class PlaceBidComponent extends Component {
                 </div>
                 <div className="detail">
                   <div class="transaction-link">
-                    <a href={"https://ropsten.etherscan.io/tx/" + (this.state.bidFlow.success ? this.state.bidFlow.success.transactionHash : '')} target="_blank">Track</a>
+                    <a href={process.env.REACT_APP_ETHERSCAN_TRANSACTION_URI + (this.state.bidFlow.success ? this.state.bidFlow.success.transactionHash : '')} target="_blank">Track</a>
                   </div>
                 </div>
               </div>

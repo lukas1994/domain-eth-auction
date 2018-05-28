@@ -13,6 +13,8 @@ module.exports = {
 create `.env` file with the following content
 ```
 REACT_APP_CONTRACT_ADDRESS=your ETH contract address
+REACT_APP_ETHERSCAN_ADDRESS_URI=https://[ropsten].etherscan.io/address/
+REACT_APP_ETHERSCAN_TRANSACTION_URI=https://[ropsten].etherscan.io/tx/
 ```
 ### deploy the contract
 
