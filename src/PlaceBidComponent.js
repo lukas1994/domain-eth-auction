@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Text } from 'react-form';
 import Modal from 'react-modal';
-import { Web3Provider } from 'react-web3';
 import Web3 from 'web3';
-import Web3NotFound from './Web3NotFound.js';
-import AccountNotFound from './AccountNotFound.js';
-import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
 import './PlaceBidComponent.css';
 

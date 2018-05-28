@@ -9,7 +9,7 @@ class WinningBid extends Component {
         const urlLink = (this.props.url.startsWith('http://') || this.props.url.startsWith('https://')) 
                         ? this.props.url 
                         : 'http://' + this.props.url
-        const addressLink = process.env.ETHERSCAN_ADDRESS_URI + this.props.address
+        const addressLink = process.env.REACT_APP_ETHERSCAN_ADDRESS_URI + this.props.address
         return (
           <div className={className}>
             <div className="winning-bid-inner">
