@@ -176,3 +176,8 @@ ol li {
 .mono {
   font-family: 'algo mono', monospace;
 }
+
+.highlight {
+  color: rgb(233,196,106);
+  text-decoration: underline;
+}

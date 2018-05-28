@@ -60,6 +60,7 @@
     overflow: hidden;
     padding-left: 10px;
     padding-right: 10px;
+    display: block;
     padding-top: 5px;
     font-size: 0.8em;
 }

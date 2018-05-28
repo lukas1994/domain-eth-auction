@@ -25,6 +25,12 @@
     color: rgba(255,255,255,0.5);
 }
 
+a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: inherit;
+}
+
 .bid-address {
     display: inline-block;
     overflow: hidden;
@@ -38,6 +44,10 @@
     padding-left: 6px;
     padding-right: 5px;
     font-size: 0.8em;
+}
+
+.bid-address:hover {
+    background: rgba(255,255,255,0.25);
 }
 
 .bid-timestamp {

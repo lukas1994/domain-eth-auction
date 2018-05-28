@@ -93,14 +93,14 @@ class App extends Component {
       <div className="App">
         <div className="wrapper">
           <aside className="side">
-            <h1>algo.app</h1>
+            <h1>bid.algo.app</h1>
             <h2>domain auction on the<br/>ethereum blockchain</h2>
             <div className="faq">
               <div className="question">
                 how does it work?
               </div>
               <div className="answer">
-                This is a rolling auction — every 24 hours, the highest bidder controls where the algo.app domain points to.
+                This is a rolling auction — every 24 hours, the highest bidder controls where the <a className="highlight" href="https://algo.app" target="_blank">algo.app</a> domain points to.
                 Bids can be placed anytime.
               </div>
             </div>
@@ -110,9 +110,9 @@ class App extends Component {
               </div>
               <div className="answer">
                 <ol>
-                  <li>New bids must be at least 1.1x the previous bid.</li>
-                  <li>Bidders are automatically refunded if they are outbid.</li>
-                  <li>Winners are automatically refunded when a new winner is selected.</li>
+                  <li>New bids must be at least 1.1x the current bid.</li>
+                  <li>If you are outbid at any point (even after winning), you are automatically given a full refund.</li>
+                  <li>A new winner is selected every 24 hours.</li>
                 </ol>
               </div>
             </div>

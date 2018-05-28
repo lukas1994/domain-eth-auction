@@ -34,11 +34,14 @@ class Bid extends Component {
     const urlLink = (this.props.url.startsWith('http://') || this.props.url.startsWith('https://')) 
                     ? this.props.url 
                     : 'http://' + this.props.url
+    const addressLink = process.env.ETHERSCAN_ADDRESS_URI + this.props.address
     return (
       <div className="Bid">
         <div className="bid-inner">
           <span className="bid-counter">#{this.props.counter}</span>
-          <span className="bid-address">{this.props.address}</span>
+          <a className="bid-address" href={addressLink} target="_blank">
+            {this.props.address}
+          </a>
           <span className="bid-url"><a href={urlLink} target="_blank">{urlDisplay}</a></span>
           <span className="bid-amount">{Number(this.props.amount).toPrecision(3)} ETH</span>
           <span className="bid-timestamp">
