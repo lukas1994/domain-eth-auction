@@ -9,7 +9,7 @@ import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
 import './PlaceBidComponent.css';
 
-const ethereumLogo = require('./ethereum-logo.svg');
+const ethereumLogo = require('./img/ethereum-logo.svg');
 const coinbaseLink = 'https://www.coinbase.com/join/536747e12c1c882c4000359a';
 
 Modal.setAppElement('#root')

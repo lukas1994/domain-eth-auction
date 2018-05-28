@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MetamaskStatus from './MetamaskStatus.js';
 import './Web3Notice.css';
-const metamaskLogo = require('./metamask-logo.svg');
+const metamaskLogo = require('./img/metamask-logo.svg');
 
 class Web3NotFound extends Component {
   render() {

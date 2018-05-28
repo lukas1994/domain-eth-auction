@@ -16,7 +16,7 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 35px 1fr 110px;
+    grid-template-columns: auto 120px 1fr 110px 50px;
 }
 
 .bid-counter {
@@ -27,12 +27,40 @@
 
 .bid-address {
     display: inline-block;
-    margin-right: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: 'algo mono', monospace;
     font-weight: 200;
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+    margin-left: 6px;
+    padding-top: 3px;
+    padding-left: 6px;
+    padding-right: 5px;
+    font-size: 0.8em;
+}
+
+.bid-timestamp {
+    text-align: right;
+    opacity: 0.5;
     font-size: 0.9em;
+    padding-top: 3px;
+}
+
+.timestamp-icon {
+    padding-top: 2px;
+    width: 12px;
+    margin-right: 3px;
+    margin-left: 2px;
+}
+
+.bid-url {
+    padding-left: 12px;
+}
+
+.bid-url a {
+    color: inherit;
+    text-decoration: underline;
 }
 
 .bid-amount {
