@@ -7,6 +7,7 @@ import Web3NotFound from './Web3NotFound.js';
 import AccountNotFound from './AccountNotFound.js';
 import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
+import validUrl from 'valid-url';
 import './PlaceBidComponent.css';
 
 const ethereumLogo = require('./img/ethereum-logo.svg');
@@ -76,6 +77,12 @@ class PlaceBidComponent extends Component {
       this.setState({bidFlow: {}});
     }
 
+    validateUrl(url) {
+      if (!validUrl.isUri(url)){
+        return {error: 'Make sure you use a valid URL!'}
+      }
+    }
+
     render () {
       if (!this.state) return <div/>;
       const account = this.state.account
@@ -91,7 +98,7 @@ class PlaceBidComponent extends Component {
                 <Text field="bid" required className="field bid-field" type="number" step="0.00005"placeholder='Bid (ETH)' min={minimumBid} defaultValue={minimumBid}/>
                 <div className="field-help">Your bid amount in ETH</div>
                 <div className="field-name">URL</div>
-                <Text field="url" required className="field url-field" placeholder='URL' />
+                <Text field="url" required className="field url-field" placeholder='example.com'/>
                 <div className="field-help">The URL to point algo.app to</div>
               </div>
               <button type="submit" className="bid-form-submit">
