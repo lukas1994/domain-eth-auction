@@ -7,7 +7,6 @@ import Web3NotFound from './Web3NotFound.js';
 import AccountNotFound from './AccountNotFound.js';
 import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
-import validUrl from 'valid-url';
 import './PlaceBidComponent.css';
 
 const ethereumLogo = require('./img/ethereum-logo.svg');
@@ -75,12 +74,6 @@ class PlaceBidComponent extends Component {
 
     closeModal() {
       this.setState({bidFlow: {}});
-    }
-
-    validateUrl(url) {
-      if (!validUrl.isUri(url)){
-        return {error: 'Make sure you use a valid URL!'}
-      }
     }
 
     render () {
