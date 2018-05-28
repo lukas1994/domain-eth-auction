@@ -11,16 +11,14 @@ import AccountNotFound from './AccountNotFound.js';
 import './App.css';
 import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
-import constants from './constants'
 
 function getContract(web3) {
-  return new web3.eth.Contract(compiledContract.abi, constants.CONTRACT_ADDRESS);
+  return new web3.eth.Contract(compiledContract.abi, process.env.REACT_APP_CONTRACT_ADDRESS);
 }
 
 class App extends Component {
   componentWillMount() {
     this.web3 = new Web3(new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws'));
-    // this.web3 = new Web3(new Web3.providers.HttpProvider(constants.NETWORK_URL));
     this.contract = getContract(this.web3);
 
     // load past events
