@@ -15,10 +15,11 @@ class Web3NotFound extends Component {
             <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">
               <button className="metamask-button">
                 <img src={metamaskLogo} className="metamask-logo"/>
-                <span className="metamask-button-text">Install Metamask</span>
+                <span className="metamask-button-text">Install MetaMask</span>
               </button>
             </a>
           </div>
+          <br/>You may need to refresh this page once you've installed MetaMask.
         </div>
       </div>
     );

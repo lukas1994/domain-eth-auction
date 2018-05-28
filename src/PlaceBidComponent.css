@@ -40,13 +40,14 @@
 }
 
 .account-heading {
-    font-family: 'system-ui', sans-serif;
     font-size: 0.9em;
+    margin-bottom: -2px;
     color: rgba(255,255,255,0.6);
 }
 
 .address {
     font-size: 0.7em;
+    font-family: 'algo mono';
 }
 
 .account-balance {
@@ -55,13 +56,13 @@
 }
 
 .balance {
-    font-family: 'sf mono', monospace;
+    font-family: 'algo mono', monospace;
     font-size: 0.9em;
 }
 
 .account-address {
     padding-left: 3px;
-    font-family: 'sf mono', monospace;
+    font-family: 'algo mono', monospace;
     overflow: hidden;
     text-overflow: ellipsis;
 }

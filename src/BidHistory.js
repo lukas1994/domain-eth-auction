@@ -8,7 +8,7 @@ class Bid extends Component {
         <div className="bid-inner">
           <span className="bid-counter">#{this.props.counter}</span>
           <span className="bid-address">{this.props.address}</span>
-          <span className="bid-amount">{Number(this.props.amount).toPrecision(2)} ETH</span>
+          <span className="bid-amount">{Number(this.props.amount).toPrecision(3)} ETH</span>
         </div>
       </div>
     )
@@ -18,14 +18,14 @@ class Bid extends Component {
 class BidHistory extends Component {
   render() {
     const historyItems = this.props.history.map((obj, index) => {
-      return <Bid key={index} counter={index} address={obj.address} amount={obj.amount} />
+      return <Bid key={index} counter={index + 1} address={obj.address} amount={obj.amount} />
     }).reverse()
     console.log(historyItems);
     return (
       <div className="BidHistory">
-        <h3>bids</h3>
+        <h3>recent bids</h3>
         <div className="history-wrapper">
-          {historyItems}
+          {historyItems.slice(0,12)}
         </div>
       </div>
     );

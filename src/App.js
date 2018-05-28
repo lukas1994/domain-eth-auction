@@ -103,7 +103,7 @@ class App extends Component {
               </div>
               <div className="answer">
                 This is a rolling auction — every 24 hours, the highest bidder controls where the algo.app domain points to.
-                Bids can be placed anytime (see below).
+                Bids can be placed anytime.
               </div>
             </div>
             <div className="faq">

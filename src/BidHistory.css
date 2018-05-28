@@ -30,7 +30,7 @@
     margin-right: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: 'sf mono', monospace;
+    font-family: 'algo mono', monospace;
     font-weight: 200;
     font-size: 0.9em;
 }
@@ -38,7 +38,7 @@
 .bid-amount {
     display: inline-block;
     text-align: right;
-    font-family: 'sf mono', monospace;
+    font-family: 'algo mono', monospace;
 }
 
 .history-wrapper {
