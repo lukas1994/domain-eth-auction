@@ -97,7 +97,7 @@ class PlaceBidComponent extends Component {
   }
 
   validateUrl(url) {
-    const urlPattern = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    const urlPattern = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
     if (!urlPattern.test(url)) {
       const message = 'Make sure your URL is valid!';
       this.setState({ validationError: message });
