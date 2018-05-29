@@ -10,7 +10,7 @@ function updateDNS(url, callback) {
           'X-Api-Key': process.env.GANDI_API_KEY,
       },
       body: {
-          "rrset_values":[url]
+          "rrset_values":[url + '.']
       },
       json: true,
   };
