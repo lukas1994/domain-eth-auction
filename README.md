@@ -62,3 +62,4 @@ truffle compile && yarn build
 ```bash
 yarn start
 ```
+
