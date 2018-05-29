@@ -46,9 +46,11 @@ class WinningBid extends Component {
 class WinningBids extends Component {
   render() {
     let winAmount = 0;
-    this.props.winners.forEach(winner => {
-      if (winner.amount > winAmount) {
+    let winIndex = -1;
+    this.props.winners.forEach((winner, index) => {
+      if (winner.amount >= winAmount) {
         winAmount = winner.amount;
+        winIndex = index;
       }
     });
     const winningBids = this.props.winners
@@ -57,7 +59,7 @@ class WinningBids extends Component {
           <WinningBid
             key={index}
             counter={index}
-            isCurrentWinner={obj.amount === winAmount}
+            isCurrentWinner={index === winIndex}
             address={obj.address}
             amount={obj.amount}
             url={obj.url}
