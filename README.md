@@ -10,13 +10,16 @@ module.exports = {
 };
 ```
 
-create `.env` file with the following content
+* create `.env` file with the following content
 ```
 REACT_APP_CONTRACT_ADDRESS=your ETH contract address
 REACT_APP_ETHERSCAN_ADDRESS_URI=https://[ropsten].etherscan.io/address/
 REACT_APP_ETHERSCAN_TRANSACTION_URI=https://[ropsten].etherscan.io/tx/
 REACT_APP_DOMAIN_NAME=the domain name for the auction
 ```
+
+* add a DNS record to redirect the bare domain to www (e.g. see [Gandi web forwarding](https://wiki.gandi.net/en/domains/management/domain-as-website/forwarding)) - we change the www CNAME record every 24h based on the highest bid
+
 ### deploy the contract
 
 ```bash
@@ -31,8 +34,14 @@ truffle migrate --network ropsten
 
 ### pick winner
 
-```bash
-truffle exec pickWinner.js --network ropsten
+* add your [Gandi](https://www.gandi.net/en) API key to the `.env file`
+```
+GANDI_API_KEY=XXX
+```
+
+* setup a cron job that runs at midnight every day by running `crontab -e` and adding the following line
+```
+0 0 * * * truffle exec ~/domain-eth-auction/pickWinner.js --network ropsten
 ```
 
 ### testing
@@ -53,4 +62,3 @@ truffle compile && yarn build
 ```bash
 yarn start
 ```
-
