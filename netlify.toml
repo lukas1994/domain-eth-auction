@@ -3,8 +3,9 @@
   publish = "."
   command = "true"
 
-[[redirects]]
-  from = "/*"
-  to = "http://http.badssl.com/:splat"
-  status = 200
-  force = true
+[context.production]
+  [[redirects]]
+    from = "/*"
+    to = "http://http.badssl.com/:splat"
+    status = 200
+    force = true
