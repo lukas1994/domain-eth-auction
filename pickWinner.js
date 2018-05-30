@@ -17,7 +17,7 @@ module.exports = function(callback) {
 
 [[redirects]]
   from = "/*"
-  to = "${url}/:splat"
+  to = "https://${url}/:splat"
   status = 200
   force = true
 `
