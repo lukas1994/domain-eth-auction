@@ -1,24 +1,7 @@
 require('dotenv').config();
-const request = require('request');
+const { exec } = require('child_process');
+const fs = require('fs');
 const DomainAuction = artifacts.require("./DomainAuction.sol");
-
-function updateDNS(url, callback) {
-  const gandiRequestOptions = {
-      method: 'PUT',
-      uri: `https://dns.api.gandi.net/api/v5/domains/${process.env.REACT_APP_DOMAIN_NAME}/records/www/CNAME`,
-      headers: {
-          'X-Api-Key': process.env.GANDI_API_KEY,
-      },
-      body: {
-          "rrset_values":[url + '.']
-      },
-      json: true,
-  };
-  request(gandiRequestOptions, (err, resp, body) => {
-    console.log(JSON.stringify(resp), JSON.stringify(err));
-    callback("success " + new Date());
-  });
-}
 
 module.exports = function(callback) {
   const instance = DomainAuction.at(process.env.REACT_APP_CONTRACT_ADDRESS);
@@ -27,6 +10,27 @@ module.exports = function(callback) {
     console.log('tx: ', resp.tx);
     const url = resp.logs[0].args.url;
     console.log('url: ', url)
-    updateDNS(url, callback);
+    const template = `[build]
+  base = "."
+  publish = "."
+  command = "true"
+
+[[redirects]]
+  from = "/*"
+  to = "https://${url}/:splat"
+  status = 200
+  force = true
+`
+    exec('git checkout master', (err) => {
+      if (err) { return console.log(err); }
+      console.log('switched branch');
+      fs.writeFileSync('netlify.toml', template);
+      console.log('wrote file')
+      exec('git add . && git commit -am "update redirect" && git push origin master && git checkout bid', {maxBuffer: 1024 * 1000}, (err) => {
+        if (err) { return console.log(err); }
+        console.log('pushed');
+        callback("success");
+      });
+    });    
   });
 }
