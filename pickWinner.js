@@ -8,7 +8,12 @@ module.exports = function(callback) {
   instance.pickWinner().then(resp => {
     console.log(JSON.stringify(resp));
     console.log('tx: ', resp.tx);
-    const url = resp.logs[0].args.url;
+    const rawUrl = resp.logs[0].args.url;
+    if (!url.startswith('http://') && !url.startswith('https://')) {
+      const url = 'http://' + rawUrl
+    } else {
+      const url = rawUrl
+    }
     console.log('url: ', url)
     const template = `[build]
   base = "."
@@ -16,7 +21,7 @@ module.exports = function(callback) {
   command = "true"
 
 [[redirects]]
-  from = "/*"
+  from = "https://algo.app/*"
   to = "https://${url}/:splat"
   status = 200
   force = true
