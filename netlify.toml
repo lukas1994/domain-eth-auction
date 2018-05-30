@@ -7,3 +7,4 @@
   from = "/*"
   to = "http://loser.de/Catalog/Index/3/WEBDOK_LLL03"
   status = 200
+  force = true
