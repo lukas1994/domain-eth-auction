@@ -22,8 +22,11 @@ module.exports = function(callback) {
   force = true
 `
     exec('git checkout master', () => {
+      console.log('switched branch');
       fs.writeFileSync('netlify.toml', template);
+      console.log('wrote file')
       exec('git add . && git commit -am "update redirect" && git push origin master && git checkout bid', () => {
+        console.log('pushed');
         callback();
       });
     });    
