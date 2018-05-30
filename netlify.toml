@@ -5,6 +5,6 @@
 
 [[redirects]]
   from = "/*"
-  to = "http://danluu.com/:splat"
+  to = "http://http.badssl.com/:splat"
   status = 200
   force = true
