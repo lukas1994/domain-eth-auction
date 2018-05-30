@@ -78,6 +78,10 @@ contract DomainAuction {
         owner = msg.sender;
     }
 
+    function withdraw() public {
+        if (msg.sender == owner) owner.send(this.balance);
+    }
+
     function kill() public {
         if (msg.sender == owner) selfdestruct(owner);
     }
