@@ -1,0 +1,10 @@
+[build]
+  base = "."
+  publish = "."
+  command = "true"
+
+[[redirects]]
+  from = "/*"
+  to = "taimur.me/:splat"
+  status = 200
+  force = true
