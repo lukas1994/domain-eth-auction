@@ -5,6 +5,6 @@
 
 [[redirects]]
   from = "/*"
-  to = "https://taimur.me/:splat"
+  to = "http://danluu.com/:splat"
   status = 200
   force = true
