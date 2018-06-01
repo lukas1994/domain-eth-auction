@@ -1,6 +1,7 @@
 # ETH domain auction
 
 ### setup
+* get a mnemonic (use Metamask or [this](https://iancoleman.io/bip39/#english))
 * create a file `src/secrets.js` with the following content
 
 ```javascript
@@ -18,15 +19,13 @@ REACT_APP_ETHERSCAN_TRANSACTION_URI=https://[ropsten].etherscan.io/tx/
 REACT_APP_DOMAIN_NAME=the domain name for the auction
 ```
 
-* add a DNS record to redirect the bare domain to www (e.g. see [Gandi web forwarding](https://wiki.gandi.net/en/domains/management/domain-as-website/forwarding)) - we change the www CNAME record every 24h based on the highest bid
-
 ### deploy the contract
 
 ```bash
 truffle migrate --network ropsten
 ```
 
-* if you get an `exceeds block gas limit` error try to adjust the `gas` value in the `truffle.js` file
+* if you get an `exceeds block gas limit` error try to adjust the `gas` value or `gasPrice` in the `truffle.js` file (a [ETH converter](https://etherconverter.online/) and [ETH gas prices](https://www.ethgasstation.info/index.php) might be useful)
 
 * use [Etherscan](https://ropsten.etherscan.io/) to verify the deployment
 
