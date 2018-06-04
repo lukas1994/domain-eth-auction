@@ -5,6 +5,6 @@
 
 [[redirects]]
   from = "https://algo.app/*"
-  to = "http://danluu.com/:splat"
+  to = "https://bid.algo.app
   status = 200
   force = true
