@@ -22,7 +22,7 @@ module.exports = function(callback) {
 
 [[redirects]]
   from = "https://algo.app/*"
-  to = "https://${url}/:splat"
+  to = "${url}/:splat"
   status = 200
   force = true
 `
