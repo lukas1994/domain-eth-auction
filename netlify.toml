@@ -8,3 +8,5 @@
   to = "https://taimur.me"
   status = 200
   force = true
+  [redirects.headers]
+    Cache-Control = no-cache
