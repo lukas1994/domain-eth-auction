@@ -5,8 +5,8 @@
 
 [[redirects]]
   from = "https://algo.app/*"
-  to = "https://danluu.com"
-  status = 200
+  to = "https://taimur.me"
+  status = 307
   force = true
   [redirects.headers]
     Cache-Control = "no-cache"
