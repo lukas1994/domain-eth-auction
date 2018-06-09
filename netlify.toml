@@ -2,11 +2,3 @@
   base = "."
   publish = "."
   command = "true"
-
-[[redirects]]
-  from = "https://algo.app/*"
-  to = "https://taimur.me"
-  status = 307
-  force = true
-  [redirects.headers]
-    Cache-Control = "no-cache"
