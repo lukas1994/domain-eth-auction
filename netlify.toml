@@ -6,7 +6,7 @@
 [[redirects]]
   from = "https://algo.app/*"
   to = "https://danluu.com"
-  status = 307
+  status = 303
   force = true
   [redirects.headers]
     Cache-Control = "no-cache"
