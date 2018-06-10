@@ -10,7 +10,7 @@ import AccountNotFound from './AccountNotFound.js';
 import './App.css';
 import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
-
+const uniqueBy = require('lodash.uniqby');
 const contractUrl = process.env.REACT_APP_ETHERSCAN_ADDRESS_URI + process.env.REACT_APP_CONTRACT_ADDRESS
 
 function getContract(web3) {
@@ -57,7 +57,7 @@ class App extends Component {
     const setContract = (web3) => {
       try {
         this.contract = getContract(web3)
-      } 
+      }
       catch(err) {
         console.log(err)
         setContract(web3)
@@ -94,18 +94,18 @@ class App extends Component {
         if (err) {
           console.log(err);
         } else {
-          this.setState({
-            bidEvents: this.state.bidEvents.concat([this.extractBidEvent(event)]),
-          });
+          const concatEvents = this.state.bidEvents.concat([this.extractBidEvent(event)]);
+          const bidEvents = uniqueBy(concatEvents, events => event.address + event.timestamp);
+          this.setState({ bidEvents });
         }
       }).on('error', console.log('subscribe new events dead'));
       this.contract.events.WinningBidLog(newEventsFilterConfig, (err, event) => {
         if (err) {
           console.log(err);
         } else {
-          this.setState({
-            winEvents: this.state.winEvents.concat([this.extractWinEvent(event)]),
-          });
+          const concatEvents = this.state.winEvents.concat([this.extractWinEvent(event)]);
+          const winEvents = uniqueBy(concatEvents, events => event.address + event.winTimestamp);
+          this.setState({ winEvents });
         }
       }).on('error', console.log('subscribe new events dead'));
     }
