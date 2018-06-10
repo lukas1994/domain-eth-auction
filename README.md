@@ -15,7 +15,7 @@ module.exports = {
 ```
 REACT_APP_CONTRACT_ADDRESS=your ETH contract address
 REACT_APP_ETHERSCAN_ADDRESS_URI=https://[ropsten].etherscan.io/address/
-REACT_APP_ETHERSCAN_TRANSACTION_URI=https://[ropsten].etherscan.io/tx/
+REACT_APP_ETH_NETWORK=[ropsten|mainnet]
 REACT_APP_DOMAIN_NAME=the domain name for the auction
 ```
 
