@@ -82,7 +82,7 @@ class BidHistory extends Component {
     return (
       <div className="BidHistory">
         <h3>recent bids</h3>
-        {this.props.history.length > 0 ? <div className="history-wrapper">{historyItems.slice(0, 12)}</div> : 'Loading...'}
+        {this.props.history.length > 0 ? <div className="history-wrapper">{historyItems.slice(0, 12)}</div> : 'Connecting to blockchain...'}
       </div>
     );
   }

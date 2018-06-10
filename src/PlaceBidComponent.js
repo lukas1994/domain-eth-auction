@@ -117,7 +117,7 @@ class PlaceBidComponent extends Component {
     const balance = this.state.balance
       ? this.web3.utils.fromWei(this.state.balance, 'ether')
       : 0;
-    const minimumBid = Number(this.props.minimumBid).toPrecision(4) || 0;
+    const minimumBid = Number(Number(this.props.minimumBid).toPrecision(4));
     const bidForm = (
       <Form
         onSubmit={this.handleSubmit.bind(this)}
@@ -183,7 +183,7 @@ class PlaceBidComponent extends Component {
         <AccountDetailsComponent address={account} balance={balance} />
         <div className="bid-form">
           <div className="minimum-bid">
-            Minimum Bid:<span className="mono"> ~{minimumBid} ETH</span>
+            Minimum Bid:<span className="mono"> {this.props.minimumBid ? '~' + minimumBid + ' ETH' : 'Loading...'}</span>
           </div>
           {balance < this.props.minimumBid ? (
             <div className="balance-notice">
