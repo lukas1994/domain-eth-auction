@@ -15,7 +15,7 @@ module.exports = {
 ```
 REACT_APP_CONTRACT_ADDRESS=your ETH contract address
 REACT_APP_ETHERSCAN_ADDRESS_URI=https://[ropsten].etherscan.io/address/
-REACT_APP_ETHERSCAN_TRANSACTION_URI=https://[ropsten].etherscan.io/tx/
+REACT_APP_ETH_NETWORK=[ropsten|mainnet]
 REACT_APP_DOMAIN_NAME=the domain name for the auction
 ```
 
@@ -32,11 +32,6 @@ truffle migrate --network ropsten
 * set the contract address as `CONTRACT_ADDRESS` in `src/comstants.js`
 
 ### pick winner
-
-* add your [Gandi](https://www.gandi.net/en) API key to the `.env file`
-```
-GANDI_API_KEY=XXX
-```
 
 * setup a cron job that runs at midnight every day by running `crontab -e` and adding the following line
 ```

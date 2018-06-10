@@ -10,7 +10,7 @@ import AccountNotFound from './AccountNotFound.js';
 import './App.css';
 import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
-
+const uniqueBy = require('lodash.uniqby');
 const contractUrl = process.env.REACT_APP_ETHERSCAN_ADDRESS_URI + process.env.REACT_APP_CONTRACT_ADDRESS
 
 function getContract(web3) {
