@@ -20,50 +20,80 @@ function getContract(web3) {
 
 class App extends Component {
   componentWillMount() {
-    this.web3 = new Web3(
-      new Web3.providers.WebsocketProvider('wss://' + process.env.REACT_APP_ETH_NETWORK + '.infura.io/ws'),
-    );
-    this.contract = getContract(this.web3);
+    const network = 'wss://' + process.env.REACT_APP_ETH_NETWORK + '.infura.io/ws'
+    let provider = new Web3.providers.WebsocketProvider(network)
+    this.web3 = new Web3()
+    this.web3.setProvider(provider)
+
+    provider.on('connect', () => {
+      console.log('WSS Reconnected');
+      this.web3.setProvider(provider);
+      setContract(this.web3)
+      loadPastEvents()
+      subscribeToNewEvents()
+    });
+    provider.on('error', e => {
+      console.log('WS error');
+      console.log('Attempting to reconnect...');
+      provider = new Web3.providers.WebsocketProvider(network);
+    });
+    provider.on('end', e => {
+      console.log('WS closed');
+      console.log('Attempting to reconnect...');
+      provider = new Web3.providers.WebsocketProvider(network);
+    });
+
+    const setContract = (web3) => {
+      try {
+        this.contract = getContract(web3)
+      } 
+      catch(err) {
+        console.log(err)
+        setContract(web3)
+      }
+    }
 
     // load past events
-    const pastEventFilterConfig = { fromBlock: 0, toBlock: 'latest' };
-    this.contract
-      .getPastEvents('BidLog', pastEventFilterConfig)
-      .then(events => {
-        console.log('now');
-        this.setState({
-          bidEvents: events.map(event => this.extractBidEvent(event)),
+    const loadPastEvents = () => {
+      const pastEventFilterConfig = { fromBlock: 0, toBlock: 'latest' };
+      this.contract
+        .getPastEvents('BidLog', pastEventFilterConfig)
+        .then(events => {
+          this.setState({
+            bidEvents: events.map(event => this.extractBidEvent(event)),
+          });
         });
-      });
-    this.contract
-      .getPastEvents('WinningBidLog', pastEventFilterConfig)
-      .then(events => {
-        this.setState({
-          winEvents: events.map(event => this.extractWinEvent(event)),
+      this.contract
+        .getPastEvents('WinningBidLog', pastEventFilterConfig)
+        .then(events => {
+          this.setState({
+            winEvents: events.map(event => this.extractWinEvent(event)),
+          });
         });
-      });
+    }
 
     // subscribe to new events
-    const newEventsFilterConfig = { fromBlock: 0 };
-    console.log(this.contract.events);
-    this.contract.events.BidLog(newEventsFilterConfig, (err, event) => {
-      if (err) {
-        console.log(err);
-      } else {
-        this.setState({
-          bidEvents: this.state.bidEvents.concat([this.extractBidEvent(event)]),
-        });
-      }
-    });
-    this.contract.events.WinningBidLog(newEventsFilterConfig, (err, event) => {
-      if (err) {
-        console.log(err);
-      } else {
-        this.setState({
-          winEvents: this.state.winEvents.concat([this.extractWinEvent(event)]),
-        });
-      }
-    });
+    const subscribeToNewEvents = () => {
+      const newEventsFilterConfig = { fromBlock: 0 };
+      this.contract.events.BidLog(newEventsFilterConfig, (err, event) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({
+            bidEvents: this.state.bidEvents.concat([this.extractBidEvent(event)]),
+          });
+        }
+      });
+      this.contract.events.WinningBidLog(newEventsFilterConfig, (err, event) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({
+            winEvents: this.state.winEvents.concat([this.extractWinEvent(event)]),
+          });
+        }
+      });
+    }
   }
 
   extractBidEvent(event) {
