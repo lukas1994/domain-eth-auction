@@ -128,10 +128,9 @@ class App extends Component {
   }
 
   render() {
-    if (!this.state) return <div />;
-    const bidEvents = this.state.bidEvents || [];
-    const winEvents = this.state.winEvents || [];
-    const highestBid = this.getHighestBid(bidEvents);
+    const bidEvents = this.state ? this.state.bidEvents || [] : [];
+    const winEvents = this.state ? this.state.winEvents || [] : [];
+    const highestBid = this.state ? this.getHighestBid(bidEvents) : 0;
 
     return (
       <div className="App">
