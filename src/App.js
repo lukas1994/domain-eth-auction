@@ -21,7 +21,7 @@ function getContract(web3) {
 class App extends Component {
   componentWillMount() {
     this.web3 = new Web3(
-      new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws'),
+      new Web3.providers.WebsocketProvider('wss://' + process.env.REACT_APP_ETH_NETWORK + '.infura.io/ws'),
     );
     this.contract = getContract(this.web3);
 
