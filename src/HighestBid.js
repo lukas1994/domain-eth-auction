@@ -8,7 +8,7 @@ class HighestBid extends Component {
       <div className="HighestBid">
         <div className="highest-bid-title">current bid</div>
         <div className="highest-bid-amount">
-          {Number(Number(this.props.bid).toPrecision(4))} ETH
+          {this.props.bid ? String(Number(Number(this.props.bid).toPrecision(4))) + ' ETH' : 'Loading...'}
         </div>
         <div className="highest-bid-time">
           {timeago().format(this.props.time * 1000)}
