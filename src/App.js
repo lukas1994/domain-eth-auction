@@ -20,10 +20,19 @@ function getContract(web3) {
   );
 }
 
+function getProvider (network) {
+  try {
+    return new Web3.providers.WebsocketProvider(network)
+  } catch(err) {
+    console.log(err)
+    getProvider(network)
+  }
+}
+
 class App extends Component {
   componentWillMount() {
     const network = 'wss://' + process.env.REACT_APP_ETH_NETWORK + '.infura.io/ws'
-    let provider = new Web3.providers.WebsocketProvider(network)
+    let provider = getProvider(network)
     this.web3 = new Web3()
     this.web3.setProvider(provider)
 
@@ -64,6 +73,8 @@ class App extends Component {
           this.setState({
             bidEvents: events.map(event => this.extractBidEvent(event)),
           });
+        }).catch(err => {
+          console.log('past events failed')
         });
       this.contract
         .getPastEvents('WinningBidLog', pastEventFilterConfig)
@@ -71,6 +82,8 @@ class App extends Component {
           this.setState({
             winEvents: events.map(event => this.extractWinEvent(event)),
           });
+        }).catch(err => {
+          console.log('past events failed')
         });
     }
 
@@ -85,7 +98,7 @@ class App extends Component {
             bidEvents: this.state.bidEvents.concat([this.extractBidEvent(event)]),
           });
         }
-      });
+      }).on('error', console.log('subscribe new events dead'));
       this.contract.events.WinningBidLog(newEventsFilterConfig, (err, event) => {
         if (err) {
           console.log(err);
@@ -94,7 +107,7 @@ class App extends Component {
             winEvents: this.state.winEvents.concat([this.extractWinEvent(event)]),
           });
         }
-      });
+      }).on('error', console.log('subscribe new events dead'));
     }
   }
 
