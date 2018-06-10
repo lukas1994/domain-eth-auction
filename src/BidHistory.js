@@ -51,7 +51,7 @@ class Bid extends Component {
             </a>
           </span>
           <span className="bid-amount">
-            {Number(this.props.amount).toPrecision(3)} ETH
+            {String(Number(this.props.amount).toPrecision(3))} ETH
           </span>
           <span className="bid-timestamp">
             <img src={clockIcon} className="timestamp-icon" alt="" />
@@ -79,7 +79,6 @@ class BidHistory extends Component {
         );
       })
       .reverse();
-    console.log(historyItems);
     return (
       <div className="BidHistory">
         <h3>recent bids</h3>
