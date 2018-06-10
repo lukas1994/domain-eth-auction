@@ -15,21 +15,19 @@ module.exports = function(callback) {
       const url = rawUrl
     }
     console.log('url: ', url)
-    const template = `[build]
-  base = "."
-  publish = "."
-  command = "true"
-
-[[redirects]]
-  from = "https://algo.app/*"
-  to = "${url}/:splat"
-  status = 200
-  force = true
+    const template = `<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    window.location.href = "${url}";
+  </script>
+</head>
+</html>
 `
     exec('git checkout master', (err) => {
       if (err) { return console.log(err); }
       console.log('switched branch');
-      fs.writeFileSync('netlify.toml', template);
+      fs.writeFileSync('index.html', template);
       console.log('wrote file')
       exec('git add . && git commit -am "update redirect" && git push origin master && git checkout bid', {maxBuffer: 1024 * 1000}, (err) => {
         if (err) { return console.log(err); }
