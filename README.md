@@ -33,11 +33,6 @@ truffle migrate --network ropsten
 
 ### pick winner
 
-* add your [Gandi](https://www.gandi.net/en) API key to the `.env file`
-```
-GANDI_API_KEY=XXX
-```
-
 * setup a cron job that runs at midnight every day by running `crontab -e` and adding the following line
 ```
 0 0 * * * truffle exec ~/domain-eth-auction/pickWinner.js --network ropsten
