@@ -11,6 +11,8 @@ import './App.css';
 import MetamaskStatus from './MetamaskStatus.js';
 import compiledContract from './DomainAuction.json';
 
+const contractUrl = process.env.REACT_APP_ETHERSCAN_ADDRESS_URI + process.env.REACT_APP_CONTRACT_ADDRESS
+
 function getContract(web3) {
   return new web3.eth.Contract(
     compiledContract.abi,
@@ -151,7 +153,7 @@ class App extends Component {
                 >
                   {process.env.REACT_APP_DOMAIN_NAME}
                 </a>{' '}
-                domain points to. Bids can be placed anytime.
+                domain points to. Bids can be placed anytime. See the smart contract <a className="highlight" href={contractUrl} target="_blank">here</a>.
               </div>
             </div>
             <div className="faq">

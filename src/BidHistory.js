@@ -51,7 +51,7 @@ class Bid extends Component {
             </a>
           </span>
           <span className="bid-amount">
-            {Number(Number(this.props.amount).toPrecision(3))} ETH
+            {Number(this.props.amount).toPrecision(3)} ETH
           </span>
           <span className="bid-timestamp">
             <img src={clockIcon} className="timestamp-icon" alt="" />
