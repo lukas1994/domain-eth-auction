@@ -27,7 +27,7 @@ module.exports = function(callback) {
     exec('git checkout master', (err) => {
       if (err) { return console.log(err); }
       console.log('switched branch');
-      fs.writeFileSync('netlify.toml', template);
+      fs.writeFileSync('index.html', template);
       console.log('wrote file')
       exec('git add . && git commit -am "update redirect" && git push origin master && git checkout bid', {maxBuffer: 1024 * 1000}, (err) => {
         if (err) { return console.log(err); }
