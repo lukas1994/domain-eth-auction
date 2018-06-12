@@ -67,8 +67,8 @@ class App extends Component {
     // load past events
     const loadPastEvents = () => {
       const pastEventFilterConfig = { fromBlock: 0, toBlock: 'latest' };
-      this.contract
-        .events.allEvents(pastEventFilterConfig)
+      this.cogntract
+        .getPastEvents('allEvents', pastEventFilterConfig)
         .then(events => {
           const bidEvents = events.filter(event => event.event == 'BidLog')
           const winEvents = events.filter(event => event.event == 'WinningBidLog')
