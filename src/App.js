@@ -40,23 +40,23 @@ class App extends Component {
       console.log('WSS Reconnected');
       this.web3.setProvider(provider);
       setContract(this.web3)
+      loadPastEvents()
+      subscribeToNewEvents()
     });
     provider.on('error', e => {
       console.log('WS error');
       console.log('Attempting to reconnect...');
-      provider = getProvider(network)
+      provider = new Web3.providers.WebsocketProvider(network);
     });
     provider.on('end', e => {
       console.log('WS closed');
       console.log('Attempting to reconnect...');
-      provider = getProvider(network)
+      provider = new Web3.providers.WebsocketProvider(network);
     });
 
     const setContract = (web3) => {
       try {
         this.contract = getContract(web3)
-        loadPastEvents()
-        subscribeToNewEvents()
       } 
       catch(err) {
         console.log(err)
@@ -74,8 +74,7 @@ class App extends Component {
             bidEvents: events.map(event => this.extractBidEvent(event)),
           });
         }).catch(err => {
-          console.log('Loading past events failed. Retrying...')
-          setTimeout(loadPastEvents, 1000)
+          console.log('past events failed')
         });
       this.contract
         .getPastEvents('WinningBidLog', pastEventFilterConfig)
@@ -84,34 +83,31 @@ class App extends Component {
             winEvents: events.map(event => this.extractWinEvent(event)),
           });
         }).catch(err => {
-          console.log('Loading past events failed. Retrying...')
-          setTimeout(loadPastEvents, 1000)
+          console.log('past events failed')
         });
     }
 
     // subscribe to new events
     const subscribeToNewEvents = () => {
       const newEventsFilterConfig = { fromBlock: 0 };
-      try {
-        this.contract.events.BidLog(newEventsFilterConfig).on('data', event => {
+      this.contract.events.BidLog(newEventsFilterConfig, (err, event) => {
+        if (err) {
+          console.log(err);
+        } else {
           this.setState({
             bidEvents: this.state.bidEvents.concat([this.extractBidEvent(event)]),
           });
-        }).on('error', e => {
-            console.log('Subscribing to new events failed. Retrying...')
-            setTimeout(subscribeToNewEvents, 1000)
-        });
-        this.contract.events.WinningBidLog(newEventsFilterConfig).on('data', event => {
+        }
+      }).on('error', console.log('subscribe new events dead'));
+      this.contract.events.WinningBidLog(newEventsFilterConfig, (err, event) => {
+        if (err) {
+          console.log(err);
+        } else {
           this.setState({
             winEvents: this.state.winEvents.concat([this.extractWinEvent(event)]),
           });
-        }).on('error', e => {
-          console.log('Subscribing to new events failed. Retrying...')
-          setTimeout(subscribeToNewEvents, 1000)
-        });
-      } catch (e) {
-        subscribeToNewEvents()
-      } 
+        }
+      }).on('error', console.log('subscribe new events dead'));
     }
   }
 
