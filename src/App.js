@@ -68,21 +68,16 @@ class App extends Component {
     const loadPastEvents = () => {
       const pastEventFilterConfig = { fromBlock: 0, toBlock: 'latest' };
       this.contract
-        .getPastEvents('BidLog', pastEventFilterConfig)
+        .allEvents(pastEventFilterConfig)
         .then(events => {
+          const bidEvents = events.filter(event => event.event == 'BidLog')
+          const winEvents = events.filter(event => event.event == 'WinningBidLog')
           this.setState({
-            bidEvents: events.map(event => this.extractBidEvent(event)),
-          });
-        }).catch(err => {
-          console.log('past events failed')
-        });
-      this.contract
-        .getPastEvents('WinningBidLog', pastEventFilterConfig)
-        .then(events => {
-          this.setState({
-            winEvents: events.map(event => this.extractWinEvent(event)),
-          });
-        }).catch(err => {
+            bidEvents: bidEvents.map(event => this.extractBidEvent(event)),
+            winEvents: winEvents.map(event => this.extractWinEvent(event))
+          })
+        })
+        .catch(err => {
           console.log('past events failed')
         });
     }
