@@ -46,18 +46,22 @@ class App extends Component {
     provider.on('error', e => {
       console.log('WS error');
       console.log('Attempting to reconnect...');
-      provider = new Web3.providers.WebsocketProvider(network);
+      provider = getProvider(network)
+      this.web3.setProvider(provider)
+      setContract(this.web3)
     });
     provider.on('end', e => {
       console.log('WS closed');
       console.log('Attempting to reconnect...');
-      provider = new Web3.providers.WebsocketProvider(network);
+      provider = getProvider(network)
+      this.web3.setProvider(provider)
+      setContract(this.web3)
     });
 
     const setContract = (web3) => {
       try {
         this.contract = getContract(web3)
-      } 
+      }
       catch(err) {
         console.log(err)
         setContract(web3)
@@ -68,16 +72,21 @@ class App extends Component {
     const loadPastEvents = () => {
       const pastEventFilterConfig = { fromBlock: 0, toBlock: 'latest' };
       this.contract
-        .getPastEvents('allEvents', pastEventFilterConfig)
+        .getPastEvents('BidLog', pastEventFilterConfig)
         .then(events => {
-          const bidEvents = events.filter(event => event.event == 'BidLog')
-          const winEvents = events.filter(event => event.event == 'WinningBidLog')
           this.setState({
-            bidEvents: bidEvents.map(event => this.extractBidEvent(event)),
-            winEvents: winEvents.map(event => this.extractWinEvent(event))
-          })
-        })
-        .catch(err => {
+            bidEvents: events.map(event => this.extractBidEvent(event)),
+          });
+        }).catch(err => {
+          console.log('past events failed')
+        });
+      this.contract
+        .getPastEvents('WinningBidLog', pastEventFilterConfig)
+        .then(events => {
+          this.setState({
+            winEvents: events.map(event => this.extractWinEvent(event)),
+          });
+        }).catch(err => {
           console.log('past events failed')
         });
     }
@@ -89,18 +98,18 @@ class App extends Component {
         if (err) {
           console.log(err);
         } else {
-          this.setState({
-            bidEvents: this.state.bidEvents.concat([this.extractBidEvent(event)]),
-          });
+          const concatEvents = this.state.bidEvents.concat([this.extractBidEvent(event)]);
+          const bidEvents = uniqueBy(concatEvents, events => event.address + event.timestamp);
+          this.setState({ bidEvents });
         }
       }).on('error', console.log('subscribe new events dead'));
       this.contract.events.WinningBidLog(newEventsFilterConfig, (err, event) => {
         if (err) {
           console.log(err);
         } else {
-          this.setState({
-            winEvents: this.state.winEvents.concat([this.extractWinEvent(event)]),
-          });
+          const concatEvents = this.state.winEvents.concat([this.extractWinEvent(event)]);
+          const winEvents = uniqueBy(concatEvents, events => event.address + event.winTimestamp);
+          this.setState({ winEvents });
         }
       }).on('error', console.log('subscribe new events dead'));
     }
